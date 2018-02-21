@@ -2,6 +2,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Connection;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Client
@@ -16,6 +17,7 @@ public class ClientApp {
 
     public static final String IP = "localhost";
     public static final int PORT = 3000;
+    public static final int DEFAULT_CHANNEL_NUM = 1;
 
     private static final int CONNECTION_TIMEOUT = 5000;
 
@@ -30,21 +32,27 @@ public class ClientApp {
 
         Network.register(ClientConnection);
 
-        Message request = new Message();
-        request.text = "Message from client";
-        ClientConnection.sendTCP(request);
+        ConnectionOpen newConnection = new ConnectionOpen( DEFAULT_CHANNEL_NUM );
+        ClientConnection.sendTCP( newConnection );
 
         statsMgr = new ClientStatsManager();
         statsMgr.init();
 
         ClientConnection.addListener(new Listener() {
             public void received (Connection connection, Object object) {
-                if (object instanceof Message) {
-                    Message response = (Message)object;
-                    System.out.println(response.text);
-                    
-                    // TODO:parsing data
-                    // statsMgr.OnReceiveData(channel, data);
+                if (object instanceof Frequency) {
+                    int frequency = ((Frequency) object ).getFrequency();
+                    System.out.println( "Frequency set to: " + frequency + " Hz" );
+                    // TODO FOR CLIENT TEAM - Save frequency on client side for displaying
+
+                } else if( object instanceof Channels ){
+                    ArrayList<ChannelNumber> channelList = ( (Channels) object ).getChannelList();
+                    for( ChannelNumber channelNum : channelList ){
+                        int channel = channelNum.getChannel();
+                        int data = channelNum.getNumber();
+                        System.out.println( "Channel: " + channel + ", Data: " + data );
+                        statsMgr.OnReceiveData(channel, data);
+                    }
                 }
             }
         });
@@ -52,23 +60,16 @@ public class ClientApp {
 
     public static void main(String[] args) {
 
-        //Connect to Server
+
         try {
             connectToServer();
+            clientInterface = new ClientInterface();
+            clientInterface.setVisible(true);
         } catch (IOException e) {
             System.err.println(e.toString());
         } catch (Exception e) {
             System.err.println(e.toString());
         }
-
-        //Start Client UI
-        try {
-            clientInterface = new ClientInterface();
-            clientInterface.setVisible(true);
-        } catch (Exception e) {
-            System.err.println(e.toString());
-        }
-
     }
 
 }

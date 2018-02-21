@@ -1,56 +1,42 @@
 import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Connection;
 
 /**
  * Server
  *
  * <P>Server side application entry point.
- * <P>This opens a server on the current machine.
  *
  * @author Team 2
  * @version 1.0
  */
 public class ServerApp {
 
-    public Server server;
     public static final int PORT = 3000;
+    private static Server server;
 
-    private void startServer() throws IOException{
-        server = new Server();
-        server.start();
-        server.bind( PORT );
+    public static Server getServerInstance() {
 
-        Network.register( server );
-
-        server.addListener(new Listener() {
-            public void received (Connection connection, Object object) {
-                if (object instanceof Message) {
-                    Message request = (Message)object;
-                    System.out.println(request.text);
-
-                    Message response = new Message();
-                    response.text = "Message from server";
-                    connection.sendTCP(response);
-                }
+        if( server == null ){
+            try {
+                server = new Server();
+                server.start();
+                server.bind(PORT);
+                Network.register(server);
+            } catch ( IOException e ){
+                System.out.println("Error creating server");
+                e.printStackTrace();
             }
-        });
+        }
+
+        return server;
     }
 
     public static void main( String[] args ) {
-
-        try {
-            ServerInterface window = new ServerInterface();
-            window.getFrmServer().setVisible(true);
-            ServerApp serverApp = new ServerApp();
-            serverApp.startServer();
-        } catch (IOException e){
-            System.out.println("Error creating server");
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ServerInterface window = new ServerInterface();
+        window.getFrmServer().setVisible(true);
+        ServerApp.getServerInstance();
+        ServerHandler handler = new ServerHandler();
+        handler.start();
     }
 
 }

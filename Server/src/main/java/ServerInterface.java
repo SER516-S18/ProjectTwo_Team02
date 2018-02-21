@@ -4,6 +4,13 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+/**
+ * Server side UI
+ *
+ * @author Team2
+ * @version 1.0
+ */
+
 public class ServerInterface {
 
 	private JFrame frmServer;

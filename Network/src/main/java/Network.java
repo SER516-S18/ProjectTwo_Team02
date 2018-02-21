@@ -1,4 +1,3 @@
-
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
@@ -14,6 +13,11 @@ import com.esotericsoftware.kryonet.EndPoint;
 public class Network {
     public static void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
-        kryo.register(Message.class);
+        kryo.register(java.util.ArrayList.class);
+        kryo.register(ChannelNumber.class);
+        kryo.register(Channels.class);
+        kryo.register(Frequency.class);
+        kryo.register(ClientChannelAmount.class);
+        kryo.register(ConnectionOpen.class);
     }
 }
