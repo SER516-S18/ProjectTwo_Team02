@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,11 +16,17 @@ import javax.swing.border.LineBorder;
 
 public class ServerInterface {
 
-	private JFrame frmServer;
+    public final int STATUS_SIZE = 100;
+    public final Color STATUS_OK = Color.GREEN;
+    public final Color STATUS_NOT_OK = Color.RED;
+
+    private JFrame frmServer;
     private JTextField freqTextField;
 	private JTextField lowTextField;
 	private JTextField highTextField;
 	private ServerHandler handler;
+	private JPanel statusPanel;
+	private Color statusColor = STATUS_OK;
 
     /**
 	 * Create the application.
@@ -63,12 +70,25 @@ public class ServerInterface {
 		panel.setBounds(10, 41, 392, 196);
 		frmServer.getContentPane().add(panel);
 		panel.setLayout(null);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(SystemColor.activeCaption));
-		panel_2.setBackground(new Color(250, 235, 215));
-		panel_2.setBounds(10, 11, 239, 163);
-		panel.add(panel_2);
+
+        statusPanel = new JPanel(){
+		    @Override
+            public void paintComponent( Graphics g ){
+                super.paintComponent( g );
+                Graphics2D g2d = (Graphics2D)g;
+                Ellipse2D.Double statusCircle =
+                        new Ellipse2D.Double(
+                                ( statusPanel.getWidth() / 2 ) - ( STATUS_SIZE / 2 ),
+                                ( statusPanel.getHeight() / 2 ) - ( STATUS_SIZE / 2 ),
+                                STATUS_SIZE, STATUS_SIZE );
+                g2d.setColor( statusColor );
+                g2d.fill( statusCircle );
+            }
+        };
+        statusPanel.setBorder(new LineBorder(SystemColor.activeCaption));
+        statusPanel.setBackground(new Color(250, 235, 215));
+        statusPanel.setBounds(10, 11, 239, 163);
+        panel.add(statusPanel);
 		
 		freqTextField = new JTextField();
 		freqTextField.setBackground(new Color(250, 235, 215));
@@ -136,6 +156,12 @@ public class ServerInterface {
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean currentState = handler.getServerSendStatus();
                 handler.setServerSendStatus( !currentState );
+                if( handler.getServerSendStatus() ){
+                    statusColor = STATUS_OK;
+                } else {
+                    statusColor = STATUS_NOT_OK;
+                }
+                statusPanel.updateUI();
             }
         });
 
