@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Connection;
@@ -11,14 +12,18 @@ import com.esotericsoftware.kryonet.Connection;
  */
 public class ServerHandler {
 
+    public static final int FREQ_SECONDS = 1000;
+    public static final int FREQ_MINUTES = 60000;
+    public static final int FREQ_HOURS = 3600000;
+
     private static ServerHandler handler;
     private ArrayList<ConnectedClient> connectedClients;
-    private int FREQ_SECONDS = 1000;
     private volatile int min = 0;
     private volatile int max = 1024;
     private volatile int freq = Frequency.DEFAULT_FREQUENCY;
     private volatile boolean serverSendStatus = true;
-    DataSender dataSender;
+    private volatile int freqInterval = FREQ_SECONDS;
+    private DataSender dataSender;
 
     ServerHandler(){
         connectedClients = new ArrayList<ConnectedClient>();
@@ -46,6 +51,10 @@ public class ServerHandler {
         serverSendStatus = sendStatus;
     }
 
+    public void setFreqInterval(int freqInterval) {
+        this.freqInterval = freqInterval;
+    }
+
     public int getMin() {
         return min;
     }
@@ -71,6 +80,7 @@ public class ServerHandler {
         Frequency frequency = new Frequency( freq );
         // Tell clients about a change in frequency
         ServerApp.getServerInstance().sendToAllTCP( frequency );
+        start();
     }
 
     public void start(){
@@ -118,15 +128,30 @@ public class ServerHandler {
         return client;
     }
 
+    private boolean isConnected( ConnectedClient connection ){
+        boolean connected = false;
+        final Connection[] connections =
+                ServerApp.getServerInstance().getConnections();
+        for ( Connection connection1 : connections ) {
+            if ( connection.getConnectionId() == connection1.getID() ) {
+                connected = true;
+            }
+        }
+        return connected;
+    }
+
     class DataSender extends Thread {
         @Override
         // Send everyone their channels data
         public void run(){
             System.out.println( "Sending started." );
-            while( serverSendStatus ) {
-                for( ConnectedClient currClient : connectedClients ) {
-                    // Only send data to client if it is not stopped
-                    if( currClient.getSendStatus() ) {
+            while( !Thread.interrupted() && serverSendStatus ) {
+                for(Iterator<ConnectedClient> it = connectedClients.iterator(); it.hasNext(); ) {
+                    // Only send data to client if it is not stopped and still connected
+                    ConnectedClient currClient = it.next();
+                    if( !isConnected( currClient ) ){
+                        it.remove();
+                    } else if( currClient.getSendStatus() ) {
                         int id = currClient.getConnectionId();
                         Channels channelList = getChannelsToSend(currClient.getChannelNum());
                         ServerApp.getServerInstance().sendToTCP(id, channelList);
@@ -134,10 +159,9 @@ public class ServerHandler {
                     }
                 }
                 try {
-                    Thread.sleep(FREQ_SECONDS / freq );
+                    Thread.sleep(freqInterval / freq );
                 } catch ( InterruptedException e ) {
-                    System.out.println( "Data sender failed to sleep" );
-                    e.printStackTrace();
+                    return;
                 }
             }
             System.out.println( "Sending stopped." );

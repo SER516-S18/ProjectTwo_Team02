@@ -1,6 +1,8 @@
 import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
 
+import javax.swing.*;
+
 /**
  * Server
  *

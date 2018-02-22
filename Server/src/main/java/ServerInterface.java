@@ -19,6 +19,9 @@ public class ServerInterface {
     public final int STATUS_SIZE = 100;
     public final Color STATUS_OK = Color.GREEN;
     public final Color STATUS_NOT_OK = Color.RED;
+    public final String FREQ_SECONDS_OPTION = "/second";
+    public final String FREQ_MINUTES_OPTION = "/minute";
+    public final String FREQ_HOURS_OPTION = "/hour";
 
     private JFrame frmServer;
     private JTextField freqTextField;
@@ -26,6 +29,7 @@ public class ServerInterface {
 	private JTextField highTextField;
 	private ServerHandler handler;
 	private JPanel statusPanel;
+	private JComboBox freqCombo;
 	private Color statusColor = STATUS_OK;
 
     /**
@@ -58,7 +62,7 @@ public class ServerInterface {
 	    handler = ServerHandler.getInstance();
 		frmServer = new JFrame();
 		frmServer.setTitle("Server");
-		frmServer.setBounds(100, 100, 448, 342);
+		frmServer.setBounds(100, 100, 500, 330);
 		frmServer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmServer.getContentPane().setLayout(null);
 		
@@ -67,7 +71,7 @@ public class ServerInterface {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(220, 220, 220));
-		panel.setBounds(10, 41, 392, 196);
+		panel.setBounds(10, 41, 450, 196);
 		frmServer.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -97,8 +101,37 @@ public class ServerInterface {
 		freqTextField.addActionListener( textBoxAction() );
 		freqTextField.setText( String.valueOf( handler.getFreq() ) );
 		panel.add(freqTextField);
-		
-		lowTextField = new JTextField();
+
+		String[] comboOptions = {
+                FREQ_SECONDS_OPTION,
+                FREQ_MINUTES_OPTION,
+                FREQ_HOURS_OPTION
+        };
+
+		freqCombo = new JComboBox(comboOptions);
+		freqCombo.setSelectedIndex( 0 );
+        freqCombo.setBounds( 328, 135, 74, 20 );
+        freqCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+               JComboBox cb = (JComboBox) actionEvent.getSource();
+               String option = (String) cb.getSelectedItem();
+               if( option != null ) {
+                   if (option.equals(FREQ_SECONDS_OPTION)) {
+                       handler.setFreqInterval(ServerHandler.FREQ_SECONDS);
+                   } else if (option.equals(FREQ_MINUTES_OPTION)) {
+                       handler.setFreqInterval(ServerHandler.FREQ_MINUTES);
+                   } else if (option.equals(FREQ_HOURS_OPTION)) {
+                       handler.setFreqInterval(ServerHandler.FREQ_HOURS);
+                   }
+               }
+            }
+        });
+        freqCombo.setFont(new Font("Monospaced", Font.PLAIN, 10));
+        panel.add( freqCombo );
+
+
+        lowTextField = new JTextField();
 		lowTextField.setBackground(SystemColor.controlHighlight);
 		lowTextField.setBounds(328, 52, 74, 38);
 		lowTextField.setColumns(10);
@@ -182,7 +215,7 @@ public class ServerInterface {
                         val = Integer.parseInt( text );
                         if( val > 0 ) {
                             handler.setFreq( val );
-                            System.out.println( "Frequency set to: " + text + " Hz" );
+                            System.out.println( "Frequency set to: " + text );
                         } else {
                             System.out.println( "Frequency must be greater than zero" );
                         }
