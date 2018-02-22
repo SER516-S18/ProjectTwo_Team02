@@ -57,6 +57,7 @@ public class ServerHandler {
         ServerApp.getServerInstance().addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 // Save client connection and inform client of the set frequency
+                ConnectedClient currClient = getClient( connection );
                 if (object instanceof ConnectionOpen) {
                     ConnectionOpen newConnection = (ConnectionOpen) object;
                     Frequency frequency = new Frequency( freq );
@@ -67,8 +68,9 @@ public class ServerHandler {
                     connection.sendTCP( frequency );
                 // Set channel number for the connected client on a channel change
                 } else if( object instanceof ClientChannelAmount) {
-                    ConnectedClient currClient = getClient( connection );
                     currClient.setChannelNum( ((ClientChannelAmount) object).getNum() );
+                } else if( object instanceof StatusUpdate ){
+                    currClient.setSendStatus( ( (StatusUpdate) object ).isRunning );
                 }
             }
         });
@@ -92,12 +94,15 @@ public class ServerHandler {
         @Override
         // Send everyone their channels data
         public void run(){
-            while( true /* TODO - have this toggle with start/stop button*/ ) {
+            while( true /* TODO - have this toggle with server start/stop button*/ ) {
                 for ( ConnectedClient currClient : connectedClients ) {
-                    int id = currClient.getConnectionId();
-                    Channels channelList = getChannelsToSend( currClient.getChannelNum() );
-                    ServerApp.getServerInstance().sendToTCP( id, channelList );
-                    System.out.println( "Channel data sent to ID: " + id );
+                    // Only send data to client if it is not stopped
+                    if( currClient.getSendStatus() ) {
+                        int id = currClient.getConnectionId();
+                        Channels channelList = getChannelsToSend(currClient.getChannelNum());
+                        ServerApp.getServerInstance().sendToTCP(id, channelList);
+                        System.out.println("Channel data sent to ID: " + id);
+                    }
                 }
                 try {
                     Thread.sleep(FREQ_SECONDS / freq);

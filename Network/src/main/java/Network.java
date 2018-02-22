@@ -19,5 +19,6 @@ public class Network {
         kryo.register(Frequency.class);
         kryo.register(ClientChannelAmount.class);
         kryo.register(ConnectionOpen.class);
+        kryo.register(StatusUpdate.class);
     }
 }
