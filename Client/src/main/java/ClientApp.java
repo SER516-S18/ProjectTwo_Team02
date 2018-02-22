@@ -31,10 +31,11 @@ public class ClientApp {
         try {
             connectToServer();
             mClientInterface = new ClientInterface();
-            mClientInterface.setVisible(true);
+            mClientInterface.getFromClient().setVisible(true);
+
         } catch (IOException e) {
-            System.err.println(e.toString());
-        } catch (Exception e) {
+           System.err.println(e.toString());
+       } catch (Exception e) {
             System.err.println(e.toString());
         }
     }
@@ -75,6 +76,7 @@ public class ClientApp {
     public static void main(String[] args) {
         sApp = new ClientApp();
         sApp.init();
+
     }
 
 }
