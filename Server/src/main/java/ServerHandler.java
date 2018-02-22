@@ -14,10 +14,10 @@ public class ServerHandler {
     private static ServerHandler handler;
     private ArrayList<ConnectedClient> connectedClients;
     private int FREQ_SECONDS = 1000;
-    private int min = 1024;
-    private int max = 0;
-    private int freq = Frequency.DEFAULT_FREQUENCY;
-    private boolean serverSendStatus = true;
+    private volatile int min = 0;
+    private volatile int max = 1024;
+    private volatile int freq = Frequency.DEFAULT_FREQUENCY;
+    private volatile boolean serverSendStatus = true;
     DataSender dataSender;
 
     ServerHandler(){
