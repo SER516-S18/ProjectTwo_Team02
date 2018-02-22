@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -113,10 +115,19 @@ public class ServerInterface {
         consoleText.setBounds(10, 15, 400, 60);
         consolePanel.add(consoleText);
 		
-		JButton btnNewButton = new JButton("Start / Stop");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnNewButton.setBounds(315, 11, 107, 23);
-		frmServer.getContentPane().add(btnNewButton);
+		final JButton startStopButton = new JButton( "Start / Stop" );
+		startStopButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		startStopButton.setBounds(315, 11, 107, 23);
+		startStopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ServerHandler handler = ServerHandler.getInstance();
+                boolean currentState = handler.getServerSendStatus();
+                handler.setServerSendStatus( !currentState );
+            }
+        });
+
+		frmServer.getContentPane().add(startStopButton);
 	}
 
 	public JFrame getFrmServer() {

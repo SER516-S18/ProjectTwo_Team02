@@ -35,7 +35,7 @@ public class ServerApp {
         ServerInterface window = new ServerInterface();
         window.getFrmServer().setVisible(true);
         ServerApp.getServerInstance();
-        ServerHandler handler = new ServerHandler();
+        ServerHandler handler = ServerHandler.getInstance();
         handler.start();
     }
 

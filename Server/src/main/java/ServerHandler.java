@@ -11,17 +11,39 @@ import com.esotericsoftware.kryonet.Connection;
  */
 public class ServerHandler {
 
+    private static ServerHandler handler;
     private ArrayList<ConnectedClient> connectedClients;
     private int FREQ_SECONDS = 1000;
     private int min = 1024;
     private int max = 0;
     private int freq = Frequency.DEFAULT_FREQUENCY;
+    private boolean serverSendStatus = true;
     DataSender dataSender;
 
     ServerHandler(){
         connectedClients = new ArrayList<ConnectedClient>();
         setListeners();
-        dataSender = new DataSender();
+    }
+
+    public static ServerHandler getInstance(){
+        if( handler == null ){
+            handler = new ServerHandler();
+        }
+        return handler;
+    }
+
+    public boolean getServerSendStatus(){
+        return serverSendStatus;
+    }
+
+    public void setServerSendStatus( boolean sendStatus ){
+        // If the server status is currently on stop,
+        // and the send status is changed to true,
+        // lets re-start the server sending process
+        if( !serverSendStatus && sendStatus ){
+            start();
+        }
+        serverSendStatus = sendStatus;
     }
 
     public int getMin() {
@@ -51,7 +73,13 @@ public class ServerHandler {
         ServerApp.getServerInstance().sendToAllTCP( frequency );
     }
 
-    public void start(){ dataSender.start(); }
+    public void start(){
+        if( dataSender != null ){
+            dataSender.interrupt();
+        }
+        dataSender = new DataSender();
+        dataSender.start();
+    }
 
     private void setListeners(){
         ServerApp.getServerInstance().addListener(new Listener() {
@@ -94,8 +122,9 @@ public class ServerHandler {
         @Override
         // Send everyone their channels data
         public void run(){
-            while( true /* TODO - have this toggle with server start/stop button*/ ) {
-                for ( ConnectedClient currClient : connectedClients ) {
+            System.out.println( "Sending started." );
+            while( serverSendStatus ) {
+                for( ConnectedClient currClient : connectedClients ) {
                     // Only send data to client if it is not stopped
                     if( currClient.getSendStatus() ) {
                         int id = currClient.getConnectionId();
@@ -105,12 +134,13 @@ public class ServerHandler {
                     }
                 }
                 try {
-                    Thread.sleep(FREQ_SECONDS / freq);
-                } catch (InterruptedException e) {
-                    System.out.println("Data sender failed to sleep");
+                    Thread.sleep(FREQ_SECONDS / freq );
+                } catch ( InterruptedException e ) {
+                    System.out.println( "Data sender failed to sleep" );
                     e.printStackTrace();
                 }
             }
+            System.out.println( "Sending stopped." );
         }
 
         private Channels getChannelsToSend( int channels ){
