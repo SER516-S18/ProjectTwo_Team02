@@ -1,16 +1,15 @@
 package client;
 
-import javafx.scene.chart.CategoryAxis;
+import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Class ClientPlotPanel
@@ -21,27 +20,14 @@ import java.util.Date;
  */
 public class ClientPlotPanel {
 
-    private static ChartPanel chartPanel;
+    private ChartPanel chartPanel;
+    private DefaultCategoryDataset dataset;
 
-    private static DefaultCategoryDataset dataset;
-
-    /**
-     * Constructor
-     */
-    ClientPlotPanel(){
-        //Create new dataset
+    ClientPlotPanel() {
         dataset = new DefaultCategoryDataset();
-
-        //Create Line Chart
-        JFreeChart lineChart = ChartFactory.createLineChart(
-          null,
-          null, null,
-           dataset,
-           PlotOrientation.VERTICAL,
-           true,
-           false,
-           false
-        );
+        JFreeChart lineChart = ChartFactory.createLineChart(null, null, null, 
+                dataset, PlotOrientation.VERTICAL, true,
+                false, false);
 
         //Setting line chart
         CategoryPlot categoryPlot = lineChart.getCategoryPlot();
@@ -54,37 +40,24 @@ public class ClientPlotPanel {
         org.jfree.chart.axis.ValueAxis rangeAxis = categoryPlot.getRangeAxis();
         rangeAxis.setVisible(false);
 
-        //save it into chartPanel
         chartPanel = new ChartPanel(lineChart);
-
-        //Setting size of chartPanel
-        //chartPanel.setPreferredSize(new Dimension(239, 200));
         chartPanel.setBackground(Color.BLACK);
-
     }
 
     /**
      * Every time we get data from server, should call this method to add channel data inside dataset.
      *
-     * @param
-     *       Date date: time when client recieved data.
-     *       int channelNumber: channel number of current data.
-     *       int value: data value
+     * @param Date date: time when client recieved data.
+     * @param channelNumber: channel number of current data.
+     * @param value: data value
      * @see Date
      */
-    public void addData(Date date, int channelNumber, int value){
-
+    public void addData(Date date, int channelNumber, int value) {
         SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
         dataset.addValue(value, "Ch " + channelNumber, sdf.format(date));
-        //System.out.println("" + sdf.format(date) + " Ch: " + channelNumber + " Value: " + value);
     }
 
-    /**
-     * Entry point to get chartPanel
-     * @return ChartPanel created
-     */
-    public ChartPanel getChartPanel(){
+    public ChartPanel getChartPanel() {
         return chartPanel;
     }
-
 }

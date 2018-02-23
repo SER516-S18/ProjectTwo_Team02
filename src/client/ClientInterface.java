@@ -1,128 +1,226 @@
 package client;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Team 02
- */
-
-import network.StatusUpdate;
-import org.jfree.chart.ChartPanel;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-
+/**
+ * The client interface provides following functionalities
+ * 1. show stats information (average, lowest, etc) of the received data from server
+ * 2. plot the data in a graph
+ * 3. a console shows system output
+ *
+ * @author Team 2
+ * @version 1.0
+ */
 public class ClientInterface {
 
-    public interface ChannelChangeListerner {
-        public void onChannelChange(int channel);
+    /** an external user could implement this interface
+     *  and set it as a listerner to receive channel switch event
+     */
+    public interface ChannelSwitchListerner {
+        public void onChannelSwitch(int channel);
     }
 
-    public final int STATUS_SIZE = 100;
-    public final Color STATUS_OK = Color.GREEN;
-    public final Color STATUS_NOT_OK = Color.RED;
-    private ClientStatsManager handler;
-    private ClientHandler clientHandler;
-    private JFrame fromClient;
-    private JButton jButton1;
-    private JCheckBox jCheckBox1;
-    private JComboBox jComboBox1;
-    private JLabel HighestValueText;
-    private JLabel FrequencyTextInput;
-    private JLabel LowestText;
-    private JLabel AverageText;
-    private JLabel ChannelText;
-    private JLabel FrequencyText;
-    private JLabel HighestTextInput;
-    private JLabel LowestValueInput;
-    private JLabel AverageTextInput;
-    private JPanel Panelwithbutton;
-    private JPanel GraphPanel;
-    private ChannelChangeListerner mChannelListerner;
+    public static final int STATUS_SIZE = 100;
+    public static final Color STATUS_OK = Color.GREEN;
+    public static final Color STATUS_NOT_OK = Color.RED;
+    public static final Color LIGHT_BLUE = new Color(191, 205, 219);
 
-    //Plot panel
-    private static ClientPlotPanel clientPlotPanel;
+    private ClientReceiveStatusHandler clientHandler;
+    private JFrame frame;
+    private JPanel basePanel;
+    private JButton jButton1;
+    private JComboBox jComboBox1;
+    private JLabel highestValueText;
+    private JLabel frequencyTextInput;
+    private JLabel lowestText;
+    private JLabel averageText;
+    private JLabel channelText;
+    private JLabel frequencyText;
+    private JLabel highestTextInput;
+    private JLabel lowestValueInput;
+    private JLabel averageTextInput;
+    private JPanel panelwithbutton;
+    private JPanel graphPanel;
+    private ChannelSwitchListerner channelListerner;
+    private ClientPlotPanel clientPlotPanel;
 
     /**
-     * Create the application.
+     * @param numChannel the number of channels need to switch
      */
     public ClientInterface(int numChannel) {
-        initcomponents(numChannel);
+        createBaseFrameAndPanel();
+        addAverageLabel();
+        addChannelSwitch(numChannel);
+        addConsole();
+        addFrequencyLabel();
+        addHighestLabel();
+        addLowestLabel();
+        addPlotGraph();
+        addStartStopButton();
+        frame.setVisible(true);
     }
 
-    public JFrame getFromClient() {
-        return fromClient;
+    public ClientPlotPanel getClientPlotPanel() {
+        return clientPlotPanel;
     }
 
     public void setAverageValue(int val) {
-        AverageTextInput.setText(Integer.toString(val));
+        averageTextInput.setText(Integer.toString(val));
     }
 
     public void setLowestValue(int val) {
-        LowestValueInput.setText(Integer.toString(val));
+        lowestValueInput.setText(Integer.toString(val));
     }
 
     public void setHighestValue(int val) {
-        HighestTextInput.setText(Integer.toString(val));
+        highestTextInput.setText(Integer.toString(val));
     }
 
     public void setFrequency(int val) {
-        FrequencyTextInput.setText(Integer.toString(val));
+        frequencyTextInput.setText(Integer.toString(val));
     }
 
-    public void setChannelChangeListener(ChannelChangeListerner listerner) {
-        mChannelListerner = listerner;
+    public void setChannelSwitchListener(ChannelSwitchListerner listerner) {
+        channelListerner = listerner;
     }
 
-    private void initcomponents(int numChannel) {
+    private void createBaseFrameAndPanel() {
+        frame = new JFrame();
+        frame.setTitle("Client");
+        frame.setBounds(100, 100, 448, 342);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
 
-        clientHandler = ClientHandler.getInstance();
-        fromClient = new JFrame();
-        fromClient.setTitle("Client");
-        fromClient.setBounds(100, 100, 448, 342);
-        fromClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fromClient.getContentPane().setLayout(null);
+        basePanel = new JPanel();
+        basePanel.setBackground(new Color(220, 220, 220));
+        basePanel.setBounds(10, 30, 410, 220);
+        frame.getContentPane().add(basePanel);
+        basePanel.setLayout(null);
+    }
 
-        Color lightblue = new Color(153, 180, 209);
-        Border border = BorderFactory.createLineBorder(lightblue);
+    private void addAverageLabel() {
+        averageText = new JLabel();
+        averageTextInput = new JLabel();
+        averageText.setBackground(LIGHT_BLUE);
+        averageText.setText("Average:");
+        averageText.setBorder(BorderFactory.createEtchedBorder());
+        averageText.setOpaque(true);
+        averageText.setSize(new Dimension(20, 20));
+        averageText.setBounds(252, 93, 74, 38);
+        basePanel.add(averageText);
 
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(220, 220, 220));
-        //panel.setBounds(10, 41, 392, 196);
-        panel.setBounds(10, 30, 410, 220);
-        fromClient.getContentPane().add(panel);
-        panel.setLayout(null);
+        averageTextInput.setBackground(Color.PINK);
+        averageTextInput.setBorder(BorderFactory.createEtchedBorder());
+        averageTextInput.setOpaque(true);
+        averageTextInput.setBounds(328, 93, 74, 38);
+        basePanel.add(averageTextInput);
+    }
 
-        jCheckBox1 = new JCheckBox();
-        Panelwithbutton = new JPanel();
+    private void addLowestLabel() {
+        lowestText = new JLabel("<html>Lowest<br> Value:</html>");
+        lowestValueInput = new JLabel();
+
+        lowestText.setBorder(BorderFactory.createEtchedBorder());
+        lowestText.setOpaque(true);
+        lowestText.setSize(new Dimension(20, 20));
+        lowestText.setBounds(252, 52, 74, 38);
+        lowestText.setBackground(Color.PINK);
+        basePanel.add(lowestText);
+
+        lowestValueInput.setBackground(LIGHT_BLUE);
+        lowestValueInput.setBorder(BorderFactory.createEtchedBorder());
+        lowestValueInput.setOpaque(true);
+        lowestValueInput.setBounds(328, 52, 74, 38);
+        basePanel.add(lowestValueInput);
+    }
+
+    private void addHighestLabel() {
+        highestTextInput = new JLabel();
+        highestValueText = new JLabel("<html>Highest <br>Value:</html> ");
+        highestTextInput.setBackground(Color.PINK);
+        highestTextInput.setBorder(BorderFactory.createEtchedBorder());
+        highestTextInput.setOpaque(true);
+        highestTextInput.setBounds(328, 11, 74, 38);
+        basePanel.add(highestTextInput);
+
+        highestValueText.setBackground(LIGHT_BLUE);
+        highestValueText.setBorder(BorderFactory.createEtchedBorder());
+        highestValueText.setOpaque(true);
+        highestValueText.setBounds(252, 11, 74, 38);
+        basePanel.add(highestValueText);
+    }
+
+    private void addFrequencyLabel() {
+        frequencyText = new JLabel();
+        frequencyTextInput = new JLabel();
+
+        frequencyText.setBackground(LIGHT_BLUE);
+        frequencyText.setText("Frequency(Hz):");
+        frequencyText.setBorder(BorderFactory.createEtchedBorder());
+        frequencyText.setOpaque(true);
+        frequencyText.setSize(new Dimension(20, 20));
+        frequencyText.setBounds(252, 173, 74, 38);
+        basePanel.add(frequencyText);
+
+        frequencyTextInput.setBackground(Color.PINK);
+        frequencyTextInput.setBorder(BorderFactory.createEtchedBorder());
+        frequencyTextInput.setOpaque(true);
+        frequencyTextInput.setBounds(328, 173, 74, 38);
+        basePanel.add(frequencyTextInput);
+    }
+
+    private void addChannelSwitch(int numChannel) {
+        channelText = new JLabel(); 
+        channelText.setText("Channel:");
+        channelText.setBorder(BorderFactory.createEtchedBorder());
+        channelText.setOpaque(true);
+        channelText.setSize(new Dimension(20, 20));
+        channelText.setBackground(Color.PINK);
+        channelText.setBounds(252, 133, 74, 38);
+        basePanel.add(channelText);
+
+        panelwithbutton = new JPanel();
+        panelwithbutton.setBackground(LIGHT_BLUE);
+        panelwithbutton.setBorder(BorderFactory.createEtchedBorder());
+
         jComboBox1 = new JComboBox();
-        AverageText = new JLabel();
-        LowestText = new JLabel("<html>Lowest<br> Value:</html>");
-        FrequencyText = new JLabel();
-        FrequencyTextInput = new JLabel();
-        LowestValueInput = new JLabel();
-        ChannelText = new JLabel();
-        AverageTextInput = new JLabel();
-        HighestTextInput = new JLabel();
-        HighestValueText = new JLabel("<html>Highest <br>Value:</html> ");
+        jComboBox1.setBackground(LIGHT_BLUE);
+        String[] strChannel = new String[numChannel];
+        for (int i = 1; i <= numChannel; ++i) {
+            strChannel[i - 1] = Integer.toString(i);
+        }
+        jComboBox1.setModel(new DefaultComboBoxModel(strChannel));
+        jComboBox1.setOpaque(true);
+        jComboBox1.setBounds(328, 133, 74, 38);
+        jComboBox1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
-        GraphPanel = new JPanel();
+        basePanel.add(jComboBox1);
+    }
 
-        final JButton startStopButton = new JButton( "Start / Stop" );
+    private void addStartStopButton() {
+        clientHandler = ClientReceiveStatusHandler.getInstance();
+        JButton startStopButton = new JButton("Start / Stop");
         startStopButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         startStopButton.setBounds(315, 6, 107, 23);
         startStopButton.addActionListener(new ActionListener() {
@@ -131,7 +229,7 @@ public class ClientInterface {
                 //System.out.println("event" + e);
                 boolean currentState = clientHandler.getClientReceiveStatus();
                 clientHandler.setClientReceiveStatus(!currentState);
-                if(clientHandler.getClientReceiveStatus()){
+                if (clientHandler.getClientReceiveStatus()) {
                     System.out.println("Client Started Running");
                 } else {
                     System.out.println("Client Stopped Running");
@@ -139,133 +237,44 @@ public class ClientInterface {
             }
 
         });
+        frame.getContentPane().add(startStopButton);
+    }
 
-        fromClient.getContentPane().add(startStopButton);
-        jCheckBox1.setText("1");
-        jCheckBox1.getAccessibleContext().setAccessibleDescription("");
-
-
-        Panelwithbutton.setBackground(new Color(191, 205, 219));
-        Panelwithbutton.setBorder(BorderFactory.createEtchedBorder());
-
-        jComboBox1.setBackground(new Color(191, 205, 219));
-        String[] strChannel = new String[numChannel];
-        for (int i = 1; i <= numChannel; ++i) {
-            strChannel[i - 1] = Integer.toString(i);
-        }
-        jComboBox1.setModel(new DefaultComboBoxModel(strChannel));
-        jComboBox1.setOpaque(true);
-        jComboBox1.setBounds(328,133,74,38);
-        jComboBox1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
-        panel.add(jComboBox1);
-        HighestTextInput.setBackground(Color.PINK);
-        HighestTextInput.setBorder(BorderFactory.createEtchedBorder());
-        HighestTextInput.setOpaque(true);
-        HighestTextInput.setBounds(328, 11, 74, 38);
-      //  HighestTextInput.setText(String.valueOf(handler.getHighestValue(chosenchannel)));
-        panel.add(HighestTextInput);
-
-        HighestValueText.setBackground(new Color(191, 205, 219));
-        HighestValueText.setBorder(BorderFactory.createEtchedBorder());
-        HighestValueText.setOpaque(true);
-        HighestValueText.setBounds(252, 11, 74, 38);
-        panel.add(HighestValueText);
-
-
-        LowestText.setBorder(BorderFactory.createEtchedBorder());
-        LowestText.setOpaque(true);
-        LowestText.setSize(new Dimension(20, 20));
-        LowestText.setBounds(252, 52, 74, 38);
-        LowestText.setBackground(Color.PINK);
-        panel.add(LowestText);
-
-        LowestValueInput.setBackground(new Color(191, 205, 219));
-        LowestValueInput.setBorder(BorderFactory.createEtchedBorder());
-        LowestValueInput.setOpaque(true);
-        LowestValueInput.setBounds(328, 52, 74, 38);
-       // LowestValueInput.setText((String.valueOf(handler.getLowestValue(chosenchannel))));
-        panel.add(LowestValueInput);
-
-        AverageText.setBackground(new Color(191, 205, 219));
-        AverageText.setText("Average:");
-        AverageText.setBorder(BorderFactory.createEtchedBorder());
-        AverageText.setOpaque(true);
-        AverageText.setSize(new Dimension(20, 20));
-        AverageText.setBounds(252, 93, 74, 38);
-        panel.add(AverageText);
-
-        AverageTextInput.setBackground(Color.PINK);
-        AverageTextInput.setBorder(BorderFactory.createEtchedBorder());
-        AverageTextInput.setOpaque(true);
-        AverageTextInput.setBounds(328, 93, 74, 38);
-       // AverageTextInput.setText( String.valueOf( handler.getAverageValue(chosenchannel) ) );
-        panel.add(AverageTextInput);
-
-
-
-
-        ChannelText.setText("Channel:");
-        ChannelText.setBorder(BorderFactory.createEtchedBorder());
-        ChannelText.setOpaque(true);
-        ChannelText.setSize(new Dimension(20, 20));
-        ChannelText.setBackground(Color.PINK);
-        ChannelText.setBounds(252,133,74,38);
-        panel.add(ChannelText);
-
-        FrequencyText.setBackground(new Color(191, 205, 219));
-        FrequencyText.setText("Frequency(Hz):");
-        FrequencyText.setBorder(BorderFactory.createEtchedBorder());
-        FrequencyText.setOpaque(true);
-        FrequencyText.setSize(new Dimension(20, 20));
-        FrequencyText.setBounds(252,173,74,38);
-        panel.add(FrequencyText);
-
-        FrequencyTextInput.setBackground(Color.PINK);
-        FrequencyTextInput.setBorder(BorderFactory.createEtchedBorder());
-        FrequencyTextInput.setOpaque(true);
-        FrequencyTextInput.setBounds(328,173,74,38);
-        panel.add(FrequencyTextInput);
-
-        GraphPanel.setBorder(new LineBorder(SystemColor.activeCaption));
-        GraphPanel.setBackground(Color.pink);
-        GraphPanel.setBounds(10, 11, 239, 200);
-        panel.add(GraphPanel);
+    private void addPlotGraph() {
+        graphPanel = new JPanel();
+        graphPanel.setBorder(new LineBorder(SystemColor.activeCaption));
+        graphPanel.setBackground(Color.pink);
+        graphPanel.setBounds(10, 11, 239, 200);
+        basePanel.add(graphPanel);
         clientPlotPanel = new ClientPlotPanel();
-        GraphPanel.setLayout(new BorderLayout(0, 0));
-        GraphPanel.add(clientPlotPanel.getChartPanel());
-        GraphPanel.validate();
+        graphPanel.setLayout(new BorderLayout(0, 0));
+        graphPanel.add(clientPlotPanel.getChartPanel());
+        graphPanel.validate();
+    }
 
+    private void addConsole() {
         JPanel consolePanel = new JPanel();
         consolePanel.setBorder(new LineBorder(SystemColor.activeCaption));
         consolePanel.setBackground(new Color(220, 220, 220));
         consolePanel.setBounds(10, 255, 412, 60);
-        fromClient.getContentPane().add(consolePanel);
+        frame.getContentPane().add(consolePanel);
         consolePanel.setLayout(null);
 
         JLabel lblNewLabel_1 = new JLabel(" Console:");
         lblNewLabel_1.setFont(new Font("Monospaced", Font.PLAIN, 13));
         lblNewLabel_1.setBounds(0, 0, 81, 15);
         consolePanel.add(lblNewLabel_1);
-        
+
         JPanel consolePanelText = new ClientConsole();
-        consolePanelText.setBounds(10,15,400,60);
+        consolePanelText.setBounds(10, 15, 400, 60);
         consolePanel.add(consolePanelText);
     }
 
     private void jComboBox1ActionPerformed(ActionEvent evt) {
-        String chosenselection = (String)jComboBox1.getSelectedItem();
+        String chosenselection = (String) jComboBox1.getSelectedItem();
         int chosenchannel = Integer.parseInt(chosenselection);
-        if (mChannelListerner != null) {
-            mChannelListerner.onChannelChange(chosenchannel);
+        if (channelListerner != null) {
+            channelListerner.onChannelSwitch(chosenchannel);
         }
-    }
-
-    public ClientPlotPanel getClientPlotPanel(){
-        return clientPlotPanel;
     }
 }

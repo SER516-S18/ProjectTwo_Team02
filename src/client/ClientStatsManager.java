@@ -1,10 +1,11 @@
 package client;
 
-import java.nio.channels.Channel;
 import java.util.ArrayList;
 
 /**
- * Client Stats Manager for all stats processing
+ * Client Stats Manager for all stats processing.
+ * It receive data from the server and provide querying for information like
+ * average, the highest and the lowest value of a channel
  *
  * @author Team 2
  * @version 1.0
@@ -25,7 +26,11 @@ public class ClientStatsManager {
         mStatsList.add(mLowest);
         mStatsList.add(mAverage);
     }
-    
+
+     /**
+     * @param channel the channel index
+     * @param data the input data associated with the channel
+    */
     public void onReceiveData(int channel, int data) {
         for (StatsInterface i : mStatsList) {
             i.onReceiveData(channel, data);
@@ -33,14 +38,14 @@ public class ClientStatsManager {
     }
 
     public int getHighestValue(int channel) {
-        return mHighest.getStats(channel);
+        return mHighest.getValue(channel);
     }
 
     public int getLowestValue(int channel) {
-        return mLowest.getStats(channel);
+        return mLowest.getValue(channel);
     }
 
     public int getAverageValue(int channel) {
-        return mAverage.getStats(channel);
+        return mAverage.getValue(channel);
     }
 }
