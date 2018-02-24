@@ -1,9 +1,9 @@
 
 # ProjectTwo_Team02
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/SER516/ProjectTwo_Team02/edit/master/README.md) [![Maven metadata URI](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/google/code/gson/gson/maven-metadata.xml.svg)](https://github.com/SER516/ProjectTwo_Team02/edit/master/README.md)
+[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/SER516/ProjectTwo_Team02/edit/master/README.md)
 
-## For People want to Run (Grader)
+## For People that want to Run it (Grader)
 
 ### Run Server
 `java -jar server.jar `
@@ -11,12 +11,14 @@
 `java -jar client.jar` 
 
 
-## For People want to Build and Run (Developer)
+## For People that want to Build and Run it (Developer)
 
 ### 1. Compile The Project
-Linux and Mac: `chmod +x compile.sh` then `./compile.sh `.
+Linux, Mac or Git Bash: `chmod +x compile.sh` then `./compile.sh `.
 
 Windows with IDE: Include all `.jar` file in folder `lib/` into External Libraries folder, then compile project using IDE.
+
+Windows Command Prompt: `call compile.bat`
 
 ### 2. Run The JAR
 #### Server
@@ -33,3 +35,5 @@ Chirag Bumb [Chiragb7](https://github.com/Chiragb7) | cbumb@asu.edu
 Kaustuv Deolal [vutsuak](http://vutsuak16.github.io/) 
 
 Zeyong Cai [NewCai](https://github.com/NewCai) | zcai26@asu.edu
+
+Douglas Carroll [dcarrol3](https://github.com/dcarrol3) | dcarrol3@asu.edu
