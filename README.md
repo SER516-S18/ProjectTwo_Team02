@@ -44,10 +44,10 @@ Sanay Devi[sanaydevi](https://github.com/sanaydevi) | svdevi@asu.edu
 
 Madhavi Latha Bodeddula[mbodeddu](https://github.com/madhavilathab9) | mbodeddu@asu.edu
 
-Melissa Day [melissaDay1] (https://github.com/melissaDay1) | melissa.day@asu.edu
+Melissa Day [melissaDay1](https://github.com/melissaDay1) | melissa.day@asu.edu
 
-Salini Chittineni [CS-27] (https://github.com/CS-27) | schittin@asu.edu
+Salini Chittineni [CS-27](https://github.com/CS-27) | schittin@asu.edu
 
-Tharun Chintham [tharunsnest] (https://github.com/tharunsnest) | tchintha@asu.edu
+Tharun Chintham [tharunsnest](https://github.com/tharunsnest) | tchintha@asu.edu
 
 Amaresh Bingumalla [AmareshB](https://github.com/AmareshB) | abingum1@asu.edu
