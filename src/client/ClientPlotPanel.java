@@ -63,9 +63,9 @@ public class ClientPlotPanel {
      * call this method to add channel data inside dataset when the 
      * client receives data
      *
-     * @param date 			time when client received data.
+     * @param date 		    time when client received data.
      * @param channelNumber channel number of current data.
-     * @param value			data value
+     * @param value		    data value
      * @see Date
      */
     public void addData(Date date, int channelNumber, int value) {

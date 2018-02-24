@@ -31,7 +31,7 @@ public class ClientLowestStats implements StatsInterface {
      * Get the lowest value from a channel at channel index
      *
      * @param channelIndex 	Channel index to get the lowest value from
-     * @return 				the lowest value of the channel
+     * @return 	            the lowest value of the channel
     */
     @Override
     public int getValue(int channelIndex) {

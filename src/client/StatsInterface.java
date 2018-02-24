@@ -21,8 +21,8 @@ public interface StatsInterface {
 
     /**
      * @param channelIndex 	The index of the channel to get stats from
-     * @return 				stats for a given channel. 
-     * 						It can be average, the highest, etc.
+     * @return 	            stats for a given channel.
+     * 					    It can be average, the highest, etc.
     */
     public int getValue(int channelIndex);
 }
