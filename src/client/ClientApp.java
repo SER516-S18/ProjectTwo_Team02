@@ -34,7 +34,7 @@ public class ClientApp {
     private ClientStatsManager statsManager;
     private ClientReceiveStatusHandler clientHandler;
     private StatusUpdatePayload statusUpdate;
-    private int curChannel;
+    private int currentChannel;
     private boolean serverIsRunning; 
 
     public static void main(String[] args) {
@@ -53,7 +53,7 @@ public class ClientApp {
 
     /** create the client UI and connect to the server*/
     public void initialize() {
-        curChannel = 1;
+        currentChannel = 1;
         clientInterface = new ClientUI(DEFAULT_CHANNEL_NUM);
         clientHandler = ClientReceiveStatusHandler.getInstance();
         statsManager = new ClientStatsManager();
@@ -83,7 +83,8 @@ public class ClientApp {
 
         NetworkSerializer.register(clientConnection);
 
-        ConnectionRequest newConnection = new ConnectionRequest(DEFAULT_CHANNEL_NUM);
+        ConnectionRequest newConnection =
+                new ConnectionRequest(DEFAULT_CHANNEL_NUM);
         clientConnection.sendTCP(newConnection);
         clientConnection.addListener(new Listener() {
             public void received(Connection connection, Object object) {
@@ -131,10 +132,10 @@ public class ClientApp {
     /** Add a listener for channel switch event from the client UI*/
     private void addChannelSwitchListener() {
         clientInterface.setChannelSwitchListener(
-            new ClientUI.ChannelSwitchListerner() {
+            new ClientUI.ChannelSwitchListener() {
             @Override
             public void onChannelSwitch(int channel) {
-                curChannel = channel;
+                currentChannel = channel;
                 UpdateInterfaceStats();
             }
         });
@@ -143,10 +144,10 @@ public class ClientApp {
     /** Update information on Client UI when new data is received */
     private void UpdateInterfaceStats() {
         clientInterface.setAverageValue(statsManager
-            .getAverageValue(curChannel));
+            .getAverageValue(currentChannel));
         clientInterface.setLowestValue(statsManager
-            .getLowestValue(curChannel));
+            .getLowestValue(currentChannel));
         clientInterface.setHighestValue(statsManager
-            .getHighestValue(curChannel));
+            .getHighestValue(currentChannel));
     }
 }

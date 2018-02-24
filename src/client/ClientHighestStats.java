@@ -14,15 +14,23 @@ public class ClientHighestStats implements StatsInterface {
     private HashMap<Integer, Integer> dataContainer =
         new HashMap<Integer, Integer>();
 
+    /**
+     * Update the maximum value for a channel
+     *
+     * @param channel Channel index to update the highest value on
+     * @param data Data received for channel at the channel index
+     */
     @Override
     public void onReceiveData(int channel, int data) {
-        int cur = getValue(channel);
-        cur = Math.max(cur, data);
-        dataContainer.put(channel, cur);
+        int currentHighest = getValue(channel);
+        currentHighest = Math.max(currentHighest, data);
+        dataContainer.put(channel, currentHighest);
     }
 
     /**
-     * @param channelIndex 
+     * Get the highest value on the channel at channelIndex
+     *
+     * @param channelIndex The channel index to get the highest value
      * @return the highest value of the channel
     */
     @Override

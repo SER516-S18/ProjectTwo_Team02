@@ -14,13 +14,13 @@ public interface StatsInterface {
      * receive data from the server and produce values like
      * average, the highest, etc.
      * 
-     * @param channelIndex
+     * @param channelIndex The index of the channel that data was received on
      * @param channelInputData 	integer received from a channel
     */
     public void onReceiveData(int channelIndex, int channelInputData);
 
     /**
-     * @param channelIndex 
+     * @param channelIndex The index of the channel to get stats from
      * @return stats for a given channel. 
      * It can be average, the highest, etc.
     */
