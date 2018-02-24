@@ -40,14 +40,32 @@ public class ClientStatsManager {
         }
     }
 
+    /**
+     * Get the highest value on a given channel
+     *
+     * @param channel Channel index to get the highest value from
+     * @return Highest value on channel
+     */
     public int getHighestValue(int channel) {
         return highest.getValue(channel);
     }
 
+    /**
+     * Get the lowest value on a given channel
+     *
+     * @param channel Channel index to get the lowest value from
+     * @return Lowest value on channel
+     */
     public int getLowestValue(int channel) {
         return lowest.getValue(channel);
     }
 
+    /**
+     * Get the average value on a given channel
+     *
+     * @param channel Channel index to get average value from
+     * @return Average value on channel
+     */
     public int getAverageValue(int channel) {
         return average.getValue(channel);
     }

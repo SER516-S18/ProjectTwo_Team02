@@ -11,12 +11,10 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 /**
@@ -35,7 +33,7 @@ public class ClientUI {
      * an external user could implement this interface
      *  and set it as a listener to receive channel switch event
      */
-    public interface ChannelSwitchListerner {
+    public interface ChannelSwitchListener {
         public void onChannelSwitch(int channel);
     }
 
@@ -48,18 +46,18 @@ public class ClientUI {
     private JFrame frame;
     private JPanel basePanel;
     private JComboBox channelSelectionBox;
-    private JLabel highestValueText;
-    private JLabel frequencyTextInput;
+    private JLabel frequencyValueText;
+    private JLabel highestText;
     private JLabel lowestText;
     private JLabel averageText;
     private JLabel channelText;
     private JLabel frequencyText;
     private JLabel highestTextInput;
-    private JLabel lowestValueInput;
-    private JLabel averageTextInput;
+    private JLabel lowestValueText;
+    private JLabel averageValueText;
     private JPanel panelwithbutton;
     private JPanel graphPanel;
-    private ChannelSwitchListerner channelListerner;
+    private ChannelSwitchListener channelListerner;
     private ClientPlotPanel clientPlotPanel;
 
     /**
@@ -78,28 +76,53 @@ public class ClientUI {
         frame.setVisible(true);
     }
 
+    /**
+     * @return The panel containing the graph
+     */
     public ClientPlotPanel getClientPlotPanel() {
         return clientPlotPanel;
     }
 
+    /**
+     * Set the average value to be displayed
+     * @param val Average value to be displayed
+     */
     public void setAverageValue(int val) {
-        averageTextInput.setText(Integer.toString(val));
+        averageValueText.setText(Integer.toString(val));
     }
 
+    /**
+     * Set the lowest value to be displayed
+     *
+     * @param val Lowest value to be displayed
+     */
     public void setLowestValue(int val) {
-        lowestValueInput.setText(Integer.toString(val));
+        lowestValueText.setText(Integer.toString(val));
     }
 
+    /**
+     * Set the highest value to be displayed
+     *
+     * @param val Highest value to be displayed
+     */
     public void setHighestValue(int val) {
         highestTextInput.setText(Integer.toString(val));
     }
 
+    /**
+     * Set the frequency to be displayed
+     *
+     * @param val frequency to be displayed
+     */
     public void setFrequency(int val) {
-        frequencyTextInput.setText(Integer.toString(val));
+        frequencyValueText.setText(Integer.toString(val));
     }
 
-    public void setChannelSwitchListener(ChannelSwitchListerner listerner) {
-        channelListerner = listerner;
+    /**
+     * @param listener Listener to catch a change of channel numbers
+     */
+    public void setChannelSwitchListener(ChannelSwitchListener listener) {
+        channelListerner = listener;
     }
 
     private void createBaseFrameAndPanel() {
@@ -118,7 +141,7 @@ public class ClientUI {
 
     private void addAverageLabel() {
         averageText = new JLabel();
-        averageTextInput = new JLabel();
+        averageValueText = new JLabel();
         averageText.setBackground(LIGHT_BLUE);
         averageText.setText("Average:");
         averageText.setBorder(BorderFactory.createEtchedBorder());
@@ -127,16 +150,16 @@ public class ClientUI {
         averageText.setBounds(252, 93, 74, 38);
         basePanel.add(averageText);
 
-        averageTextInput.setBackground(Color.PINK);
-        averageTextInput.setBorder(BorderFactory.createEtchedBorder());
-        averageTextInput.setOpaque(true);
-        averageTextInput.setBounds(328, 93, 74, 38);
-        basePanel.add(averageTextInput);
+        averageValueText.setBackground(Color.PINK);
+        averageValueText.setBorder(BorderFactory.createEtchedBorder());
+        averageValueText.setOpaque(true);
+        averageValueText.setBounds(328, 93, 74, 38);
+        basePanel.add(averageValueText);
     }
 
     private void addLowestLabel() {
         lowestText = new JLabel("<html>Lowest<br> Value:</html>");
-        lowestValueInput = new JLabel();
+        lowestValueText = new JLabel();
 
         lowestText.setBorder(BorderFactory.createEtchedBorder());
         lowestText.setOpaque(true);
@@ -145,32 +168,32 @@ public class ClientUI {
         lowestText.setBackground(Color.PINK);
         basePanel.add(lowestText);
 
-        lowestValueInput.setBackground(LIGHT_BLUE);
-        lowestValueInput.setBorder(BorderFactory.createEtchedBorder());
-        lowestValueInput.setOpaque(true);
-        lowestValueInput.setBounds(328, 52, 74, 38);
-        basePanel.add(lowestValueInput);
+        lowestValueText.setBackground(LIGHT_BLUE);
+        lowestValueText.setBorder(BorderFactory.createEtchedBorder());
+        lowestValueText.setOpaque(true);
+        lowestValueText.setBounds(328, 52, 74, 38);
+        basePanel.add(lowestValueText);
     }
 
     private void addHighestLabel() {
         highestTextInput = new JLabel();
-        highestValueText = new JLabel("<html>Highest <br>Value:</html> ");
+        highestText = new JLabel("<html>Highest <br>Value:</html> ");
         highestTextInput.setBackground(Color.PINK);
         highestTextInput.setBorder(BorderFactory.createEtchedBorder());
         highestTextInput.setOpaque(true);
         highestTextInput.setBounds(328, 11, 74, 38);
         basePanel.add(highestTextInput);
 
-        highestValueText.setBackground(LIGHT_BLUE);
-        highestValueText.setBorder(BorderFactory.createEtchedBorder());
-        highestValueText.setOpaque(true);
-        highestValueText.setBounds(252, 11, 74, 38);
-        basePanel.add(highestValueText);
+        highestText.setBackground(LIGHT_BLUE);
+        highestText.setBorder(BorderFactory.createEtchedBorder());
+        highestText.setOpaque(true);
+        highestText.setBounds(252, 11, 74, 38);
+        basePanel.add(highestText);
     }
 
     private void addFrequencyLabel() {
         frequencyText = new JLabel();
-        frequencyTextInput = new JLabel();
+        frequencyValueText = new JLabel();
 
         frequencyText.setBackground(LIGHT_BLUE);
         frequencyText.setText("Frequency(Hz):");
@@ -180,13 +203,16 @@ public class ClientUI {
         frequencyText.setBounds(252, 173, 74, 38);
         basePanel.add(frequencyText);
 
-        frequencyTextInput.setBackground(Color.PINK);
-        frequencyTextInput.setBorder(BorderFactory.createEtchedBorder());
-        frequencyTextInput.setOpaque(true);
-        frequencyTextInput.setBounds(328, 173, 74, 38);
-        basePanel.add(frequencyTextInput);
+        frequencyValueText.setBackground(Color.PINK);
+        frequencyValueText.setBorder(BorderFactory.createEtchedBorder());
+        frequencyValueText.setOpaque(true);
+        frequencyValueText.setBounds(328, 173, 74, 38);
+        basePanel.add(frequencyValueText);
     }
 
+    /**
+     * @param channelNumber Number of channels selected
+     */
     private void addChannelSwitch(int channelNumber) {
         channelText = new JLabel(); 
         channelText.setText("Channel:");
@@ -212,7 +238,7 @@ public class ClientUI {
         channelSelectionBox.setBounds(328, 133, 74, 38);
         channelSelectionBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                onChannelSwitch(evt);
+                onChannelSwitch();
             }
         });
 
@@ -269,12 +295,12 @@ public class ClientUI {
         consolePanel.add(consolePanelText);
     }
 
-    private void onChannelSwitch(ActionEvent evt) {
-        String chosenselection = (String) channelSelectionBox
+    private void onChannelSwitch() {
+        String chosenSelection = (String) channelSelectionBox
             .getSelectedItem();
-        int chosenchannel = Integer.parseInt(chosenselection);
+        int chosenChannel = Integer.parseInt(chosenSelection);
         if (channelListerner != null) {
-            channelListerner.onChannelSwitch(chosenchannel);
+            channelListerner.onChannelSwitch(chosenChannel);
         }
     }
 }

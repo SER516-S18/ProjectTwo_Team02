@@ -20,6 +20,9 @@ public class ClientConsole extends JPanel {
     
     private JTextArea consoleContent;
 
+    /**
+     * Creates a new console panel
+     */
     ClientConsole() {
         consoleContent = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(consoleContent);
@@ -37,6 +40,12 @@ public class ClientConsole extends JPanel {
 
     /** used to receive data from outputstream and update the text area*/
     class ClientOutputStream extends OutputStream {
+        /**
+         * Write the contents of the output stream to the textArea
+         *
+         * @param i The current character to add to the console
+         * @throws IOException An error occurred while writing to the console
+         */
         @Override
         public void write(int i) throws IOException {
             // Append new console character and update the text area

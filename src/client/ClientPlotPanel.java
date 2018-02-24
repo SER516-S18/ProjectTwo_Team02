@@ -25,10 +25,14 @@ public class ClientPlotPanel {
     private ChartPanel chartPanel;
     private DefaultCategoryDataset dataSet;
 
+    /**
+     * Create a graph area to display data received from the server
+     */
     ClientPlotPanel() {
         dataSet = new DefaultCategoryDataset();
 
-        JFreeChart lineChart = ChartFactory.createLineChart(null, null, null,
+        JFreeChart lineChart =
+                ChartFactory.createLineChart(null, null, null,
                 dataSet, PlotOrientation.VERTICAL, true,
                 false, false);
 
@@ -59,7 +63,7 @@ public class ClientPlotPanel {
      * call this method to add channel data inside dataset when the 
      * client receives data
      *
-     * @param Date date 	time when client recieved data.
+     * @param date 	time when client received data.
      * @param channelNumber channel number of current data.
      * @param value			data value
      * @see Date
@@ -69,6 +73,9 @@ public class ClientPlotPanel {
         dataSet.addValue(value, "Ch " + channelNumber, sdf.format(date));
     }
 
+    /**
+     * @return A panel containing the chart of data from server
+     */
     public ChartPanel getChartPanel() {
         return chartPanel;
     }

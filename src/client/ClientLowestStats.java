@@ -14,22 +14,30 @@ public class ClientLowestStats implements StatsInterface {
     private HashMap<Integer, Integer> dataContainer =
         new HashMap<Integer, Integer>();
 
+    /**
+     * Update the minimum value for a channel
+     *
+     * @param channel Channel index to update the lowest value on
+     * @param data Data received for channel at the channel index
+     */
     @Override
     public void onReceiveData(int channel, int data) {
-        int cur = getValue(channel);
-        cur = Math.min(cur, data);
-        dataContainer.put(channel, cur);
+        int currentLow = getValue(channel);
+        currentLow = Math.min(currentLow, data);
+        dataContainer.put(channel, currentLow);
     }
 
     /**
-     * @param channelNumber 
+     * Get the lowest value from a channel at channel index
+     *
+     * @param channelIndex Channel index to get the lowest value from
      * @return the lowest value of the channel
     */
     @Override
-    public int getValue(int channelNumber) {
-        if (!dataContainer.containsKey(channelNumber)) {
-            dataContainer.put(channelNumber, Integer.MAX_VALUE);
+    public int getValue(int channelIndex) {
+        if (!dataContainer.containsKey(channelIndex)) {
+            dataContainer.put(channelIndex, Integer.MAX_VALUE);
         }
-        return dataContainer.get(channelNumber);
+        return dataContainer.get(channelIndex);
     }
 }
