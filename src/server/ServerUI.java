@@ -175,9 +175,13 @@ public class ServerUI {
 		JPanel consolePanel = new JPanel();
         consolePanel.setBorder(new LineBorder(SystemColor.activeCaption));
         consolePanel.setBackground(new Color(220, 220, 220));
-        consolePanel.setBounds(10, 248, 412, 44);
+        consolePanel.setBounds(10, 248, 412, 74);
 		serverFrame.getContentPane().add(consolePanel);
         consolePanel.setLayout(null);
+
+        JPanel consoleText = new ServerConsole();
+        consoleText.setBounds(10, 15, 400, 60);
+        consolePanel.add(consoleText);
 
         JLabel consoleLabel = new JLabel(" Console:");
 		consoleLabel.setFont(new Font("Courier New", Font.PLAIN, 13));
