@@ -22,9 +22,9 @@ public class ServerHandler {
 
     private static ServerHandler handler;
     private ArrayList<ConnectedClient> connectedClients;
-    private volatile int min = 0;
-    private volatile int max = 1024;
-    private volatile int freq = Frequency.DEFAULT_FREQUENCY;
+    private volatile int minValue = 0;
+    private volatile int maxValue = 1024;
+    private volatile int frequency = Frequency.DEFAULT_FREQUENCY;
     private volatile boolean serverSendStatus = true;
     private volatile int freqInterval = FREQ_SECONDS;
     private DataSender dataSender;
@@ -92,17 +92,17 @@ public class ServerHandler {
      *
      * @return Minimum random number value
      */
-    public int getMin() {
-        return min;
+    public int getMinValue() {
+        return minValue;
     }
 
     /**
      * Set the minimum random number value to generate for sending to the client
      *
-     * @param min Minimum random number value
+     * @param minValue Minimum random number value
      */
-    public void setMin(int min) {
-        this.min = min;
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
     }
 
     /**
@@ -110,17 +110,17 @@ public class ServerHandler {
      *
      * @return Maximum random number value
      */
-    public int getMax() {
-        return max;
+    public int getMaxValue() {
+        return maxValue;
     }
 
     /**
      * Set the maximum random number value to generate for sending to the client
      *
-     * @param max Maximum random number value
+     * @param maxValue Maximum random number value
      */
-    public void setMax(int max) {
-        this.max = max;
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
     }
 
     /**
@@ -129,21 +129,21 @@ public class ServerHandler {
      *
      * @return Frequency that data should be sent to all clients
      */
-    public int getFreq() {
-        return freq;
+    public int getFrequency() {
+        return frequency;
     }
 
     /**
      * Set the frequency per frequency type (ie seconds, minutes or hours)
      * that data should be sent to all clients
      *
-     * @param freq Frequency that data should be sent to all clients
+     * @param frequency Frequency that data should be sent to all clients
      */
-    public void setFreq(int freq) {
-        this.freq = freq;
-        Frequency frequency = new Frequency( freq );
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+        Frequency freqToSend = new Frequency( frequency );
         // Tell clients about a change in frequency
-        ServerApp.getServerInstance().sendToAllTCP( frequency );
+        ServerApp.getServerInstance().sendToAllTCP( freqToSend );
         start();
     }
 
@@ -170,7 +170,8 @@ public class ServerHandler {
                 ConnectedClient currClient = getClient( connection );
                 if (object instanceof ConnectionOpen) {
                     ConnectionOpen newConnection = (ConnectionOpen) object;
-                    Frequency frequency = new Frequency( freq );
+                    Frequency frequency =
+                            new Frequency(ServerHandler.this.frequency);
                     connectedClients.add( new ConnectedClient(
                             connection.getID(),
                             newConnection.getChannelNum().getNum()
@@ -203,17 +204,18 @@ public class ServerHandler {
     }
 
     /**
-     * @return A random number between min and max, inclusive
+     * @return A random number between minValue and maxValue, inclusive
      */
     private int getRandomNum(){
-        return min + (int)( Math.random() * ( ( max - min ) + 1 ) );
+        return minValue +
+                (int)( Math.random() * ( ( maxValue - minValue) + 1 ) );
     }
 
     private ConnectedClient getClient( Connection connection ){
         ConnectedClient client = null;
-        for( ConnectedClient currClient : connectedClients ){
-            if( currClient.getConnectionId() == connection.getID() ){
-                client = currClient;
+        for( ConnectedClient currentClient : connectedClients ){
+            if( currentClient.getConnectionId() == connection.getID() ){
+                client = currentClient;
             }
         }
         return client;
@@ -229,8 +231,8 @@ public class ServerHandler {
         boolean connected = false;
         final Connection[] connections =
                 ServerApp.getServerInstance().getConnections();
-        for ( Connection connection1 : connections ) {
-            if ( connection.getConnectionId() == connection1.getID() ) {
+        for ( Connection currentConnection : connections ) {
+            if ( connection.getConnectionId() == currentConnection.getID() ) {
                 connected = true;
             }
         }
@@ -252,13 +254,13 @@ public class ServerHandler {
                      it.hasNext(); ) {
                     // Only send data to client if it is not stopped and
                     // still connected
-                    ConnectedClient currClient = it.next();
-                    if( !isConnected( currClient ) ){
+                    ConnectedClient currentClient = it.next();
+                    if( !isConnected( currentClient ) ){
                         it.remove();
-                    } else if( currClient.getSendStatus() ) {
-                        int id = currClient.getConnectionId();
+                    } else if( currentClient.getSendStatus() ) {
+                        int id = currentClient.getConnectionId();
                         Channels channelList = getChannelsToSend(
-                                currClient.getChannelNum());
+                                currentClient.getChannelNum());
                         ServerApp.getServerInstance().sendToTCP(
                                 id,
                                 channelList );
@@ -266,7 +268,7 @@ public class ServerHandler {
                     }
                 }
                 try {
-                    Thread.sleep(freqInterval / freq );
+                    Thread.sleep(freqInterval / frequency);
                 } catch ( InterruptedException e ) {
                     return;
                 }
