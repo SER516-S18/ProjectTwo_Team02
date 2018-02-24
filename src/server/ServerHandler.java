@@ -24,7 +24,7 @@ public class ServerHandler {
     private ArrayList<ConnectedClient> connectedClients;
     private volatile int minValue = 0;
     private volatile int maxValue = 1024;
-    private volatile int frequency = Frequency.DEFAULT_FREQUENCY;
+    private volatile int frequency = FrequencyPayload.DEFAULT_FREQUENCY;
     private volatile boolean serverSendStatus = true;
     private volatile int freqInterval = FREQ_SECONDS;
     private DataSender dataSender;
@@ -68,7 +68,7 @@ public class ServerHandler {
             start();
         }
         serverSendStatus = sendStatus;
-        StatusUpdate statusUpdate = new StatusUpdate();
+        StatusUpdatePayload statusUpdate = new StatusUpdatePayload();
         statusUpdate.isRunning = sendStatus;
         ServerApp.getServerInstance().sendToAllTCP(statusUpdate);
     }
@@ -141,7 +141,7 @@ public class ServerHandler {
      */
     public void setFrequency(int frequency) {
         this.frequency = frequency;
-        Frequency freqToSend = new Frequency( frequency );
+        FrequencyPayload freqToSend = new FrequencyPayload( frequency );
         // Tell clients about a change in frequency
         ServerApp.getServerInstance().sendToAllTCP( freqToSend );
         start();
@@ -168,24 +168,26 @@ public class ServerHandler {
             public void received(Connection connection, Object object) {
                 // Save client connection and inform client of the set frequency
                 ConnectedClient currClient = getClient( connection );
-                if (object instanceof ConnectionOpen) {
-                    ConnectionOpen newConnection = (ConnectionOpen) object;
-                    Frequency frequency =
-                            new Frequency(ServerHandler.this.frequency);
+                if (object instanceof ConnectionRequest) {
+                    ConnectionRequest newConnection =
+                            (ConnectionRequest) object;
+                    FrequencyPayload frequency =
+                            new FrequencyPayload(ServerHandler.this.frequency);
                     connectedClients.add( new ConnectedClient(
                             connection.getID(),
-                            newConnection.getChannelNum().getNum()
+                            newConnection.getChannelNum().getChannelNum()
                     ) );
                     connection.sendTCP( frequency );
                 // Set channel number for the connected client on a channel
                 // change
-                } else if( object instanceof ClientChannelAmount) {
+                } else if( object instanceof NumberOfChannelsPayload) {
                     currClient.setChannelNum(
-                            ((ClientChannelAmount) object).getNum() );
-                } else if( object instanceof StatusUpdate ){
+                            ((NumberOfChannelsPayload) object)
+                                    .getChannelNum() );
+                } else if( object instanceof StatusUpdatePayload){
                     currClient.setSendStatus(
-                            ( (StatusUpdate) object ).isRunning );
-                    if(( (StatusUpdate) object ).isRunning){
+                            ( (StatusUpdatePayload) object ).isRunning );
+                    if(( (StatusUpdatePayload) object ).isRunning){
                         System.out.println(
                                 "Client ID:" +
                                 connection.getID() +
@@ -259,7 +261,7 @@ public class ServerHandler {
                         it.remove();
                     } else if( currentClient.getSendStatus() ) {
                         int id = currentClient.getConnectionId();
-                        Channels channelList = getChannelsToSend(
+                        ChannelsPayload channelList = getChannelsToSend(
                                 currentClient.getChannelNum());
                         ServerApp.getServerInstance().sendToTCP(
                                 id,
@@ -280,13 +282,13 @@ public class ServerHandler {
          * Get the channels for a specific client before sending them
          *
          * @param channels number of channels a client has selected
-         * @return Channels with random number data to send to a client
+         * @return All channels containing a random number to send to a client
          */
-        private Channels getChannelsToSend( int channels ){
-            Channels channelList = new Channels();
+        private ChannelsPayload getChannelsToSend(int channels ){
+            ChannelsPayload channelList = new ChannelsPayload();
 
             for( int i = 1; i <= channels; i++ ){
-                channelList.addChannelNum( i, getRandomNum() );
+                channelList.addChannel( i, getRandomNum() );
             }
 
             return channelList;

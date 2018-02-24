@@ -16,7 +16,7 @@ import javax.swing.border.EtchedBorder;
  * @version 1.0
  */
 
-public class ServerInterface {
+public class ServerUI {
 
     public final int STATUS_SIZE = 100;
     public final Color STATUS_OK = Color.GREEN;
@@ -37,12 +37,12 @@ public class ServerInterface {
     /**
 	 * Create the server UI
 	 */
-	public ServerInterface() {
+	public ServerUI() {
 		initialize();
 	}
 
     /**
-     * @return The server JFRame containing the server UI
+     * @return The server JFrame containing the server UI
      */
     public JFrame getserverFrame() {
         return serverFrame;
@@ -58,10 +58,7 @@ public class ServerInterface {
 		serverFrame.setBounds(100, 100, 448, 342);
 		serverFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		serverFrame.getContentPane().setLayout(null);
-		
-		//Color lightblue = new Color(153,180,209);
-		//Border border = BorderFactory.createLineBorder(lightblue);
-		
+
 		JPanel parentPanel = new JPanel();
 		parentPanel.setBackground(new Color(220, 220, 220));
 		parentPanel.setBounds(10, 41, 412, 196);
@@ -167,7 +164,7 @@ public class ServerInterface {
 		parentPanel.add(txtrLowestValue);
 
         JLabel txtrFrequency =
-                new JLabel("<HTML>Frequency <br> (Hz):</HTML>");
+                new JLabel("<HTML> Frequency <br> (Hz):</HTML>");
         txtrFrequency.setFont(new Font("Courier New", Font.PLAIN, 13));
 		txtrFrequency.setBackground(SystemColor.controlHighlight);
 		txtrFrequency.setBorder(new EtchedBorder(

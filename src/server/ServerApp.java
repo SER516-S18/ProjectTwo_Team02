@@ -2,7 +2,7 @@ package server;
 
 import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
-import network.Network;
+import network.NetworkSerializer;
 
 /**
  * Server
@@ -28,7 +28,7 @@ public class ServerApp {
                 server = new Server();
                 server.start();
                 server.bind(PORT);
-                Network.register(server);
+                NetworkSerializer.register(server);
             } catch ( IOException e ){
                 System.out.println("Error creating server");
                 e.printStackTrace();
@@ -42,7 +42,7 @@ public class ServerApp {
      * @param args No arguments expected
      */
     public static void main( String[] args ) {
-        ServerInterface window = new ServerInterface();
+        ServerUI window = new ServerUI();
         window.getserverFrame().setVisible(true);
         ServerApp.getServerInstance();
         ServerHandler handler = ServerHandler.getInstance();
