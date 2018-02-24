@@ -46,4 +46,4 @@ Madhavi Latha Bodeddula[mbodeddu](https://github.com/madhavilathab9) | mbodeddu@
 
 Melissa Day [melissaDay1] (https://github.com/melissaDay1) | melissa.day@asu.edu
 
-Shalini Chittineni [CS-27] (https://github.com/CS-27) | schittin@asu.edu
+Salini Chittineni [CS-27] (https://github.com/CS-27) | schittin@asu.edu
