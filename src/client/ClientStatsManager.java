@@ -31,8 +31,8 @@ public class ClientStatsManager {
     /**
      * call this method when the client receives data from the server 
      * 
-     * @param channel the channel index
-     * @param data the input data associated with the channel
+     * @param channel 	the channel index
+     * @param data 		the input data associated with the channel
     */
     public void onReceiveData(int channel, int data) {
         for (StatsInterface i : statsList) {
@@ -43,8 +43,8 @@ public class ClientStatsManager {
     /**
      * Get the highest value on a given channel
      *
-     * @param channel Channel index to get the highest value from
-     * @return Highest value on channel
+     * @param channel 	Channel index to get the highest value from
+     * @return 			Highest value on channel
      */
     public int getHighestValue(int channel) {
         return highest.getValue(channel);
@@ -53,8 +53,8 @@ public class ClientStatsManager {
     /**
      * Get the lowest value on a given channel
      *
-     * @param channel Channel index to get the lowest value from
-     * @return Lowest value on channel
+     * @param channel 	Channel index to get the lowest value from
+     * @return 			Lowest value on channel
      */
     public int getLowestValue(int channel) {
         return lowest.getValue(channel);
@@ -63,8 +63,8 @@ public class ClientStatsManager {
     /**
      * Get the average value on a given channel
      *
-     * @param channel Channel index to get average value from
-     * @return Average value on channel
+     * @param channel 	Channel index to get average value from
+     * @return 			Average value on channel
      */
     public int getAverageValue(int channel) {
         return average.getValue(channel);

@@ -25,8 +25,8 @@ public class ClientAverageStats implements StatsInterface {
     /**
      * Update the average value for a channel
      *
-     * @param channel Channel index to update the average value on
-     * @param data Data received for channel at the channel index
+     * @param channel 	Channel index to update the average value on
+     * @param data 		Data received for channel at the channel index
      */
     @Override
     public void onReceiveData(int channel, int data) {
@@ -54,8 +54,8 @@ public class ClientAverageStats implements StatsInterface {
     /**
      * Get the latest running sum and data from a channel
      *
-     * @param channel The channel index to get the running sum and data from
-     * @return Channel data containing a running sum and the latest data
+     * @param channel 	The channel index to get the running sum and data from
+     * @return Channel 	data containing a running sum and the latest data
      */
     private InnerData getInnerData(int channel) {
         if (!dataContainer.containsKey(channel)) {

@@ -17,7 +17,7 @@ public class ClientLowestStats implements StatsInterface {
     /**
      * Update the minimum value for a channel
      *
-     * @param channel Channel index to update the lowest value on
+     * @param channel 	Channel index to update the lowest value on
      * @param data Data received for channel at the channel index
      */
     @Override
@@ -30,8 +30,8 @@ public class ClientLowestStats implements StatsInterface {
     /**
      * Get the lowest value from a channel at channel index
      *
-     * @param channelIndex Channel index to get the lowest value from
-     * @return the lowest value of the channel
+     * @param channelIndex 	Channel index to get the lowest value from
+     * @return 				the lowest value of the channel
     */
     @Override
     public int getValue(int channelIndex) {

@@ -43,8 +43,8 @@ public class ClientConsole extends JPanel {
         /**
          * Write the contents of the output stream to the textArea
          *
-         * @param i The current character to add to the console
-         * @throws IOException An error occurred while writing to the console
+         * @param i 			The current character to add to the console
+         * @throws IOException 	An error occurred while writing to the console
          */
         @Override
         public void write(int i) throws IOException {

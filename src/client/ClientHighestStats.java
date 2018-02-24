@@ -30,8 +30,8 @@ public class ClientHighestStats implements StatsInterface {
     /**
      * Get the highest value on the channel at channelIndex
      *
-     * @param channelIndex The channel index to get the highest value
-     * @return the highest value of the channel
+     * @param channelIndex 	The channel index to get the highest value
+     * @return 				the highest value of the channel
     */
     @Override
     public int getValue(int channelIndex) {
