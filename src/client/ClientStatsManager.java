@@ -16,7 +16,8 @@ public class ClientStatsManager {
     private ClientHighestStats highest;
     private ClientLowestStats lowest;
     private ClientAverageStats average;
-
+    
+    /** create sub stats controler like average, the highest, etc*/
     public void initialize() {
         statsList = new ArrayList<StatsInterface>();
         highest = new ClientHighestStats();

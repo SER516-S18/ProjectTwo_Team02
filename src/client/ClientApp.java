@@ -41,6 +41,9 @@ public class ClientApp {
         getInstance().initialize();
     }
 
+    /**
+    * @return A singleton instance of the client
+    */
     public static ClientApp getInstance() {
         if (instance == null) {
             instance = new ClientApp();
@@ -48,6 +51,7 @@ public class ClientApp {
         return instance;
     }
 
+    /** create the client UI and connect to the server*/
     public void initialize() {
         curChannel = 1;
         clientInterface = new ClientUI(DEFAULT_CHANNEL_NUM);
@@ -90,6 +94,7 @@ public class ClientApp {
 
     /**
      * Called when the client receives data from the server
+     * 
      * @param object	received data from the server
      */
     private void onDataReceived(Object object) {
@@ -123,7 +128,7 @@ public class ClientApp {
         }
     }
 
-    /** Add listener for channel switch event from the client UI*/
+    /** Add a listener for channel switch event from the client UI*/
     private void addChannelSwitchListener() {
         clientInterface.setChannelSwitchListener(
             new ClientUI.ChannelSwitchListerner() {

@@ -35,6 +35,7 @@ public class ClientConsole extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
+    /** used to receive data from outputstream and update the text area*/
     class ClientOutputStream extends OutputStream {
         @Override
         public void write(int i) throws IOException {
