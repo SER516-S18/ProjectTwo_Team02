@@ -26,6 +26,8 @@ Windows with IDE: Include all `.jar` file in folder `lib/` into External Librari
 
 
 ## Contributors
-Desai Dhruti([@dhruti21](https://github.com/dhruti21) | dadesai2 |dadesai2@asu.edu)
-Chirag Bumb([@Chiragb7](https://github.com/Chiragb7) | cbumb |cbumb@asu.edu)
-Kaustuv Deolal(@vutusuak)(http://vutsuak16.github.io/) 
+Desai Dhruti [dhruti21](https://github.com/dhruti21) | dadesai2@asu.edu
+
+Chirag Bumb [Chiragb7](https://github.com/Chiragb7) | cbumb@asu.edu
+
+Kaustuv Deolal [vutsuak](http://vutsuak16.github.io/) 
