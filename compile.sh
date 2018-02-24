@@ -9,7 +9,7 @@ echo
 echo "\033[0;93mWorking dir: $ROOT_PATH"
 echo 
 
-cd $ROOT_PATH
+cd "$ROOT_PATH"
 
 rm server.jar
 rm client.jar
