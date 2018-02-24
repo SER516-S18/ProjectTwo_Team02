@@ -255,7 +255,7 @@ public class ClientUI {
         JPanel consolePanel = new JPanel();
         consolePanel.setBorder(new LineBorder(SystemColor.activeCaption));
         consolePanel.setBackground(new Color(220, 220, 220));
-        consolePanel.setBounds(10, 255, 412, 60);
+        consolePanel.setBounds(10, 255, 412, 75);
         frame.getContentPane().add(consolePanel);
         consolePanel.setLayout(null);
 
