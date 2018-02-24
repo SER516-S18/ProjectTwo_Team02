@@ -18,7 +18,7 @@ public class ClientHighestStats implements StatsInterface {
      * Update the maximum value for a channel
      *
      * @param channel Channel index to update the highest value on
-     * @param data Data received for channel at the channel index
+     * @param data    Data received for channel at the channel index
      */
     @Override
     public void onReceiveData(int channel, int data) {

@@ -227,7 +227,7 @@ public class ServerHandler {
      * Determines whether or not a client is still connected to the server
      *
      * @param connection A potential connected client
-     * @return true if the client is connected, false if not.
+     * @return           true if the client is connected, false if not.
      */
     private boolean isConnected( ConnectedClient connection ){
         boolean connected = false;

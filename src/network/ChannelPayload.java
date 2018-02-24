@@ -16,7 +16,7 @@ public class ChannelPayload {
 
     /**
      * @param channel ChannelPayload number of this channel
-     * @param data Data to be sent on this channel
+     * @param data    Data to be sent on this channel
      */
     ChannelPayload(int channel, int data ){
         this.channel = channel;

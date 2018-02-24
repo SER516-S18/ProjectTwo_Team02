@@ -23,7 +23,7 @@ public class ChannelsPayload {
      * Add a channel to the channel list
      *
      * @param channel Number of the channel
-     * @param data Data to be sent on the channel
+     * @param data    Data to be sent on the channel
      */
     public void addChannel(int channel, int data ){
         ChannelPayload channelNum = new ChannelPayload( channel, data );
