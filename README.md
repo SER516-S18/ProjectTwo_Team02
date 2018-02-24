@@ -1,7 +1,9 @@
 
 # ProjectTwo_Team02
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/SER516/ProjectTwo_Team02/edit/master/README.md) [![Maven metadata URI](https://img.shields.io/maven-metadata/v/http/central.maven.org/maven2/com/google/code/gson/gson/maven-metadata.xml.svg)](https://github.com/SER516/ProjectTwo_Team02/edit/master/README.md)
+## Team members
+>
+- Dhruti Desai ([@dhruti21](https://github.com/dhruti21) | dadesai2 | dadesai2@asu.edu)
 
 ## For People want to Run (Grader)
 
