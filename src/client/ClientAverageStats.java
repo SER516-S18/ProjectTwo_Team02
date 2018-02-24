@@ -11,11 +11,12 @@ import java.util.HashMap;
  */
 public class ClientAverageStats implements StatsInterface {
     
-	/** an innter class used to simplify data processing. 
-     * It records sumaration and number of input data
+	/**
+     * An inner class used to simplify data processing.
+     * It records sum and number of input data
      */
     private class InnerData {
-        int sum = 0; // sumaration of received data
+        int sum = 0; // sum of received data
         int num = 0; // number of received data
     }
 
@@ -43,6 +44,11 @@ public class ClientAverageStats implements StatsInterface {
         }
     }
 
+    /**
+     *
+     * @param channel Channel index
+     * @return Channel data
+     */
     private InnerData getInnerData(int channel) {
         if (!dataContainer.containsKey(channel)) {
             dataContainer.put(channel, new InnerData());
