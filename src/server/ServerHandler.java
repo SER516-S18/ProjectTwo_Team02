@@ -74,13 +74,14 @@ public class ServerHandler {
     }
 
     /**
-     * The time interval in milliseconds that frequency is based upon. An example
-     * would be seconds, minutes, or hours.
+     * The time interval in milliseconds that frequency is based upon. An
+     * example would be seconds, minutes, or hours.
      *
-     * A frequency of 1 and a frequency interval of 60000 would mean data is sent
-     * once a minute.
+     * A frequency of 1 and a frequency interval of 60000 would mean data is
+     * sent once a minute.
      *
-     * @param freqInterval Interval at which data should be set based on frequency
+     * @param freqInterval Interval at which data should be set based on
+     *                     frequency
      */
     public void setFreqInterval(int freqInterval) {
         this.freqInterval = freqInterval;
@@ -158,8 +159,9 @@ public class ServerHandler {
     }
 
     /**
-     * Set all server request action listeners. For example, if a client connects or
-     * changes a channel value, these listeners will capture the event and handle it
+     * Set all server request action listeners. For example, if a client
+     * connects or changes a channel value, these listeners will capture the
+     * event and handle it
      */
     private void setListeners(){
         ServerApp.getServerInstance().addListener(new Listener() {
@@ -174,15 +176,26 @@ public class ServerHandler {
                             newConnection.getChannelNum().getNum()
                     ) );
                     connection.sendTCP( frequency );
-                // Set channel number for the connected client on a channel change
+                // Set channel number for the connected client on a channel
+                // change
                 } else if( object instanceof ClientChannelAmount) {
-                    currClient.setChannelNum( ((ClientChannelAmount) object).getNum() );
+                    currClient.setChannelNum(
+                            ((ClientChannelAmount) object).getNum() );
                 } else if( object instanceof StatusUpdate ){
-                    currClient.setSendStatus( ( (StatusUpdate) object ).isRunning );
+                    currClient.setSendStatus(
+                            ( (StatusUpdate) object ).isRunning );
                     if(( (StatusUpdate) object ).isRunning){
-                        System.out.println("Client ID:"+ connection.getID() +" Status Running");
+                        System.out.println(
+                                "Client ID:" +
+                                connection.getID() +
+                                " Status Running"
+                        );
                     } else {
-                        System.out.println("Client ID:"+ connection.getID() +" Status: Not Running");
+                        System.out.println(
+                                "Client ID:" +
+                                connection.getID() +
+                                " Status: Not Running"
+                        );
                     }
                 }
             }
@@ -235,15 +248,20 @@ public class ServerHandler {
         public void run(){
             System.out.println( "Sending started." );
             while( !Thread.interrupted() && serverSendStatus ) {
-                for(Iterator<ConnectedClient> it = connectedClients.iterator(); it.hasNext(); ) {
-                    // Only send data to client if it is not stopped and still connected
+                for( Iterator<ConnectedClient> it = connectedClients.iterator();
+                     it.hasNext(); ) {
+                    // Only send data to client if it is not stopped and
+                    // still connected
                     ConnectedClient currClient = it.next();
                     if( !isConnected( currClient ) ){
                         it.remove();
                     } else if( currClient.getSendStatus() ) {
                         int id = currClient.getConnectionId();
-                        Channels channelList = getChannelsToSend(currClient.getChannelNum());
-                        ServerApp.getServerInstance().sendToTCP(id, channelList);
+                        Channels channelList = getChannelsToSend(
+                                currClient.getChannelNum());
+                        ServerApp.getServerInstance().sendToTCP(
+                                id,
+                                channelList );
                         System.out.println("Channel data sent to ID: " + id);
                     }
                 }

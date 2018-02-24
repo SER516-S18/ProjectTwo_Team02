@@ -76,8 +76,10 @@ public class ServerInterface {
                 Graphics2D g2d = (Graphics2D)g;
                 Ellipse2D.Double statusCircle =
                         new Ellipse2D.Double(
-                                ( statusPanel.getWidth() / 2 ) - ( STATUS_SIZE / 2 ),
-                                ( statusPanel.getHeight() / 2 ) - ( STATUS_SIZE / 2 ),
+                                ( statusPanel.getWidth() / 2 ) -
+                                        ( STATUS_SIZE / 2 ),
+                                ( statusPanel.getHeight() / 2 ) -
+                                        ( STATUS_SIZE / 2 ),
                                 STATUS_SIZE, STATUS_SIZE );
                 g2d.setColor( statusColor );
                 g2d.fill( statusCircle );
@@ -144,11 +146,13 @@ public class ServerInterface {
         highTextField.setText( String.valueOf( handler.getMax() ) );
         panel.add(highTextField);
 
-        JLabel txtrHighestValue = new JLabel("<HTML> Highest <br> value: </HTML>");
+        JLabel txtrHighestValue = new JLabel(
+                "<HTML> Highest <br> value: </HTML>");
         txtrHighestValue.setForeground(SystemColor.desktop);
         txtrHighestValue.setFont(new Font("Courier New", Font.PLAIN, 13));
 		txtrHighestValue.setBackground(new Color(173, 216, 230));
-		txtrHighestValue.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		txtrHighestValue.setBorder(new EtchedBorder(
+		        EtchedBorder.LOWERED, null, null));
 		txtrHighestValue.setBounds(245, 11, 80, 38);
 		panel.add(txtrHighestValue);
 
@@ -157,14 +161,16 @@ public class ServerInterface {
         
         txtrLowestValue.setFont(new Font("Courier New", Font.PLAIN, 13));
         txtrLowestValue.setOpaque(true);
-		txtrLowestValue.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		txtrLowestValue.setBorder(new EtchedBorder(
+		        EtchedBorder.LOWERED, null, null));
 		txtrLowestValue.setBounds(245, 52, 80, 38);
 		panel.add(txtrLowestValue);
 
         JLabel txtrFrequency = new JLabel("<HTML>Frequency <br> (Hz):</HTML>");
         txtrFrequency.setFont(new Font("Courier New", Font.PLAIN, 13));
 		txtrFrequency.setBackground(SystemColor.controlHighlight);
-		txtrFrequency.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		txtrFrequency.setBorder(new EtchedBorder(
+		        EtchedBorder.LOWERED, null, null));
 		txtrFrequency.setBounds(245, 92, 80, 38);
 		panel.add(txtrFrequency);
 		
@@ -201,7 +207,8 @@ public class ServerInterface {
 	}
 
     /**
-     * @return Action to be triggered on a press of the enter key for frequency, lowest value and highest value
+     * @return Action to be triggered on a press of the enter key for
+     * frequency, lowest value and highest value
      */
 	private Action textBoxAction(){
 	    return new AbstractAction() {
@@ -218,25 +225,31 @@ public class ServerInterface {
                             handler.setFreq( val );
                             System.out.println( "Frequency set to: " + text );
                         } else {
-                            System.out.println( "Frequency must be greater than zero" );
+                            System.out.println(
+                                    "Frequency must be greater than zero" );
                         }
                     } else if ( e.getSource().equals( lowTextField ) ) {
                         text = lowTextField.getText();
                         val = Integer.parseInt( text );
                         if( val <= handler.getMax() ) {
                             handler.setMin( val );
-                            System.out.println( "Lowest value set to: " + text );
+                            System.out.println(
+                                    "Lowest value set to: " + text );
                         } else {
-                            System.out.println( "Lowest value must be less than the max" );
+                            System.out.println(
+                                    "Lowest value must be less than the max" );
                         }
                     } else if ( e.getSource().equals( highTextField ) ) {
                         text = highTextField.getText();
                         val = Integer.parseInt( text );
                         if( val >= handler.getMin() ) {
                             handler.setMax( val );
-                            System.out.println( "Highest value set to: " + text );
+                            System.out.println(
+                                    "Highest value set to: " + text );
                         } else {
-                            System.out.println( "Highest value must be greater than the max" );
+                            System.out.println(
+                                    "Highest value must be " +
+                                    "greater than the max" );
                         }
                     }
                 } catch( NumberFormatException err ){

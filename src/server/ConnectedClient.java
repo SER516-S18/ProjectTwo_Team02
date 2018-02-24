@@ -14,7 +14,8 @@ class ConnectedClient {
     /**
      * Creates a connected client to start sending data to
      *
-     * @param connectionId the KryoNet client ID given upon connection to the server
+     * @param connectionId the KryoNet client ID given upon connection to the
+     *                     server
      * @param channelNum The number of channels currently selected by the client
      */
     ConnectedClient( int connectionId, int channelNum ){
@@ -41,7 +42,8 @@ class ConnectedClient {
     }
 
     /**
-     * Set the number of channels the client as specified that it wants to receive
+     * Set the number of channels the client as specified that it wants to
+     * receive
      *
      * @param channelNum The number of channels currently selected by the client
      */
