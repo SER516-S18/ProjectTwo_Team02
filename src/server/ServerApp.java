@@ -2,7 +2,7 @@ package server;
 
 import java.io.IOException;
 import com.esotericsoftware.kryonet.Server;
-import network.Network;
+import network.NetworkSerializer;
 
 /**
  * Server
@@ -28,7 +28,7 @@ public class ServerApp {
                 server = new Server();
                 server.start();
                 server.bind(PORT);
-                Network.register(server);
+                NetworkSerializer.register(server);
             } catch ( IOException e ){
                 System.out.println("Error creating server");
                 e.printStackTrace();

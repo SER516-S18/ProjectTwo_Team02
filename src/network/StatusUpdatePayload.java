@@ -6,6 +6,6 @@ package network;
  * @author Team2
  * @version 1.0
  */
-public class StatusUpdate {
+public class StatusUpdatePayload {
     public boolean isRunning = true;
 }

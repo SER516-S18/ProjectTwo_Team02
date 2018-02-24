@@ -8,14 +8,14 @@ import java.util.ArrayList;
  * @author Team2
  * @version 1.0
  */
-public class Channels {
+public class ChannelsPayload {
 
-    private ArrayList<Channel> channelList;
+    private ArrayList<ChannelPayload> channelList;
 
     /**
      * Create a list of channels to be sent to a single client
      */
-    public Channels(){
+    public ChannelsPayload(){
         channelList = new ArrayList<>();
     }
 
@@ -26,14 +26,14 @@ public class Channels {
      * @param data Data to be sent on the channel
      */
     public void addChannel(int channel, int data ){
-        Channel channelNum = new Channel( channel, data );
+        ChannelPayload channelNum = new ChannelPayload( channel, data );
         channelList.add( channelNum );
     }
 
     /**
      * @return The list of channels to be sent to the client
      */
-    public ArrayList<Channel> getChannelList() {
+    public ArrayList<ChannelPayload> getChannelList() {
         return channelList;
     }
 }

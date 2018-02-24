@@ -7,25 +7,29 @@ package network;
  * @author Team2
  * @version 1.0
  */
-public class ConnectionOpen {
-    private ClientChannelNumber channelNum;
+public class ConnectionRequest {
+    private NumberOfChannelsPayload channelNum;
 
     /** No arg constructor needed to serialize */
-    ConnectionOpen(){ channelNum = new ClientChannelNumber( ClientChannelNumber.DEFAULT_CHANNEL_NUM ); }
+    ConnectionRequest(){
+        channelNum =
+                new NumberOfChannelsPayload(
+                        NumberOfChannelsPayload.DEFAULT_CHANNEL_NUM );
+    }
 
     /**
      * Creates a new open connection to inform the server
      *
      * @param channelNum Number of channels the client has upon connecting
      */
-    public ConnectionOpen( int channelNum ){
-        this.channelNum = new ClientChannelNumber( channelNum );
+    public ConnectionRequest(int channelNum ){
+        this.channelNum = new NumberOfChannelsPayload( channelNum );
     }
 
     /**
      * @return Number of channels a client has upon connecting
      */
-    public ClientChannelNumber getChannelNum(){
+    public NumberOfChannelsPayload getChannelNum(){
         return channelNum;
     }
 }

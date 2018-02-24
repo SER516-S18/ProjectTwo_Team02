@@ -164,7 +164,7 @@ public class ServerUI {
 		parentPanel.add(txtrLowestValue);
 
         JLabel txtrFrequency =
-                new JLabel("<HTML>Frequency <br> (Hz):</HTML>");
+                new JLabel("<HTML> Frequency <br> (Hz):</HTML>");
         txtrFrequency.setFont(new Font("Courier New", Font.PLAIN, 13));
 		txtrFrequency.setBackground(SystemColor.controlHighlight);
 		txtrFrequency.setBorder(new EtchedBorder(

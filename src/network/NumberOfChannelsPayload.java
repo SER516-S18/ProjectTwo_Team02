@@ -7,20 +7,20 @@ package network;
  * @author Team2
  * @version 1.0
  */
-public class ClientChannelNumber {
+public class NumberOfChannelsPayload {
 
     public static final int DEFAULT_CHANNEL_NUM = 1;
     private int channelNum;
 
     /** No arg constructor needed to serialize */
-    ClientChannelNumber(){ channelNum = DEFAULT_CHANNEL_NUM; };
+    NumberOfChannelsPayload(){ channelNum = DEFAULT_CHANNEL_NUM; };
 
     /**
      * Creates a client channel amount request to be sent to the server
      *
      * @param channelNum
      */
-    ClientChannelNumber( int channelNum ){
+    NumberOfChannelsPayload(int channelNum ){
         this.channelNum = channelNum;
     }
 

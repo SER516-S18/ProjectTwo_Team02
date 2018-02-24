@@ -33,7 +33,7 @@ public class ClientApp {
     private ClientUI clientInterface;
     private ClientStatsManager statsManager;
     private ClientReceiveStatusHandler clientHandler;
-    private StatusUpdate statusUpdate;
+    private StatusUpdatePayload statusUpdate;
     private int curChannel;
     private boolean serverIsRunning; 
 
@@ -72,14 +72,14 @@ public class ClientApp {
     }
 
     private void connectToServer() throws IOException {
-        statusUpdate = new StatusUpdate();
+        statusUpdate = new StatusUpdatePayload();
         clientConnection = new Client();
         clientConnection.start();
         clientConnection.connect(CONNECTION_TIMEOUT, IP, PORT);
 
-        Network.register(clientConnection);
+        NetworkSerializer.register(clientConnection);
 
-        ConnectionOpen newConnection = new ConnectionOpen(DEFAULT_CHANNEL_NUM);
+        ConnectionRequest newConnection = new ConnectionRequest(DEFAULT_CHANNEL_NUM);
         clientConnection.sendTCP(newConnection);
         clientConnection.addListener(new Listener() {
             public void received(Connection connection, Object object) {
@@ -94,17 +94,17 @@ public class ClientApp {
      */
     private void onDataReceived(Object object) {
         if (clientHandler.getClientReceiveStatus()) {
-            if (object instanceof Frequency) {
-                int frequency = ((Frequency) object).getFrequency();
+            if (object instanceof FrequencyPayload) {
+                int frequency = ((FrequencyPayload) object).getFrequency();
                 System.out.println("Frequency set to: " + frequency + " Hz");
                 clientInterface.setFrequency(frequency);
-            } else if (object instanceof Channels) {
-                ArrayList<Channel> channelList =
-                    ((Channels) object).getChannelList();
-                for (Channel channelNum : channelList) {
+            } else if (object instanceof ChannelsPayload) {
+                ArrayList<ChannelPayload> channelList =
+                    ((ChannelsPayload) object).getChannelList();
+                for (ChannelPayload channelNum : channelList) {
                     int channel = channelNum.getChannel();
                     int number = channelNum.getData();
-                    System.out.println("Channel: " + channel + 
+                    System.out.println("Channel: " + channel +
                         ", Data: " + number);
                     Date currentTime = Calendar.getInstance().getTime();
                     clientInterface.getClientPlotPanel().
@@ -112,8 +112,8 @@ public class ClientApp {
                     statsManager.onReceiveData(channel, number);
                 }
                 UpdateInterfaceStats();
-            } else if (object instanceof StatusUpdate) {
-                serverIsRunning = ((StatusUpdate) object).isRunning;
+            } else if (object instanceof StatusUpdatePayload) {
+                serverIsRunning = ((StatusUpdatePayload) object).isRunning;
                 if (serverIsRunning) {
                     System.out.println("Server started running");
                 } else {

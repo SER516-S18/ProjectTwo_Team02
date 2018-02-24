@@ -7,18 +7,18 @@ package network;
  * @author Team2
  * @version 1.0
  */
-public class Channel {
+public class ChannelPayload {
     private int channel;
     private int data;
 
     /** No arg constructor needed to serialize */
-    Channel(){}
+    ChannelPayload(){}
 
     /**
-     * @param channel Channel number of this channel
+     * @param channel ChannelPayload number of this channel
      * @param data Data to be sent on this channel
      */
-    Channel(int channel, int data ){
+    ChannelPayload(int channel, int data ){
         this.channel = channel;
         this.data = data;
     }
