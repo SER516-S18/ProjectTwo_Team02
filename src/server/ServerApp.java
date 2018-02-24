@@ -42,7 +42,7 @@ public class ServerApp {
      * @param args No arguments expected
      */
     public static void main( String[] args ) {
-        ServerInterface window = new ServerInterface();
+        ServerUI window = new ServerUI();
         window.getserverFrame().setVisible(true);
         ServerApp.getServerInstance();
         ServerHandler handler = ServerHandler.getInstance();

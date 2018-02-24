@@ -174,14 +174,14 @@ public class ServerHandler {
                             new Frequency(ServerHandler.this.frequency);
                     connectedClients.add( new ConnectedClient(
                             connection.getID(),
-                            newConnection.getChannelNum().getNum()
+                            newConnection.getChannelNum().getChannelNum()
                     ) );
                     connection.sendTCP( frequency );
                 // Set channel number for the connected client on a channel
                 // change
-                } else if( object instanceof ClientChannelAmount) {
+                } else if( object instanceof ClientChannelNumber) {
                     currClient.setChannelNum(
-                            ((ClientChannelAmount) object).getNum() );
+                            ((ClientChannelNumber) object).getChannelNum() );
                 } else if( object instanceof StatusUpdate ){
                     currClient.setSendStatus(
                             ( (StatusUpdate) object ).isRunning );
@@ -286,7 +286,7 @@ public class ServerHandler {
             Channels channelList = new Channels();
 
             for( int i = 1; i <= channels; i++ ){
-                channelList.addChannelNum( i, getRandomNum() );
+                channelList.addChannel( i, getRandomNum() );
             }
 
             return channelList;

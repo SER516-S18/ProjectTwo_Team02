@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.management.loading.MLetContent;
-
 /**
  * Client
  *
@@ -101,11 +99,11 @@ public class ClientApp {
                 System.out.println("Frequency set to: " + frequency + " Hz");
                 clientInterface.setFrequency(frequency);
             } else if (object instanceof Channels) {
-                ArrayList<ChannelNumber> channelList = 
+                ArrayList<Channel> channelList =
                     ((Channels) object).getChannelList();
-                for (ChannelNumber channelNum : channelList) {
+                for (Channel channelNum : channelList) {
                     int channel = channelNum.getChannel();
-                    int number = channelNum.getNumber();
+                    int number = channelNum.getData();
                     System.out.println("Channel: " + channel + 
                         ", Data: " + number);
                     Date currentTime = Calendar.getInstance().getTime();
