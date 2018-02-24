@@ -50,4 +50,4 @@ Salini Chittineni [CS-27] (https://github.com/CS-27) | schittin@asu.edu
 
 Tharun Chintham [tharunsnest] (https://github.com/tharunsnest) | tchintha@asu.edu
 
-Amaresh Bingumalla [AmareshB] (https://github.com/AmareshB) | abingum1@asu.edu
+Amaresh Bingumalla [AmareshB](https://github.com/AmareshB) | abingum1@asu.edu
