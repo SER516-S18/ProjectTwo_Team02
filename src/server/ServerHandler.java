@@ -9,6 +9,7 @@ import network.*;
 
 /**
  * Handles sending and receiving data for the server.
+ * This can be considered the logic of the server.
  *
  * @author Team2
  * @version 1.0
@@ -28,11 +29,15 @@ public class ServerHandler {
     private volatile int freqInterval = FREQ_SECONDS;
     private DataSender dataSender;
 
-    ServerHandler(){
+
+    private ServerHandler(){
         connectedClients = new ArrayList<ConnectedClient>();
         setListeners();
     }
 
+    /**
+     * @return A singleton instance of ServerHandler
+     */
     public static ServerHandler getInstance(){
         if( handler == null ){
             handler = new ServerHandler();
@@ -40,10 +45,21 @@ public class ServerHandler {
         return handler;
     }
 
+    /**
+     * Whether or not the server is started or stopped
+     *
+     * @return True if server is started and running. False if not
+     */
     public boolean getServerSendStatus(){
         return serverSendStatus;
     }
 
+    /**
+     * Set whether the server is started or stopped and let all
+     * client know about the change
+     *
+     * @param sendStatus true if started, false if stopped
+     */
     public void setServerSendStatus( boolean sendStatus ){
         // If the server status is currently on stop,
         // and the send status is changed to true,
@@ -57,30 +73,71 @@ public class ServerHandler {
         ServerApp.getServerInstance().sendToAllTCP(statusUpdate);
     }
 
+    /**
+     * The time interval in milliseconds that frequency is based upon. An example
+     * would be seconds, minutes, or hours.
+     *
+     * A frequency of 1 and a frequency interval of 60000 would mean data is sent
+     * once a minute.
+     *
+     * @param freqInterval Interval at which data should be set based on frequency
+     */
     public void setFreqInterval(int freqInterval) {
         this.freqInterval = freqInterval;
     }
 
+    /**
+     * Get the minimum random number value to generate for sending to the client
+     *
+     * @return Minimum random number value
+     */
     public int getMin() {
         return min;
     }
 
+    /**
+     * Set the minimum random number value to generate for sending to the client
+     *
+     * @param min Minimum random number value
+     */
     public void setMin(int min) {
         this.min = min;
     }
 
+    /**
+     * Get the maximum random number value to generate for sending to the client
+     *
+     * @return Maximum random number value
+     */
     public int getMax() {
         return max;
     }
 
+    /**
+     * Set the maximum random number value to generate for sending to the client
+     *
+     * @param max Maximum random number value
+     */
     public void setMax(int max) {
         this.max = max;
     }
 
+    /**
+     * Get the frequency per frequency type (ie seconds, minutes or hours)
+     * that data should be sent to all clients
+     *
+     * @return Frequency that data should be sent to all clients
+     */
     public int getFreq() {
         return freq;
     }
 
+    /**
+     * Set the frequency per frequency type (ie seconds, minutes or hours)
+     * that data should be sent to all clients
+     *
+     * @param freq Frequency that data should be sent to all clients
+     */
     public void setFreq(int freq) {
         this.freq = freq;
         Frequency frequency = new Frequency( freq );
@@ -89,6 +146,9 @@ public class ServerHandler {
         start();
     }
 
+    /**
+     * Starts sending data from the server to the connected clients
+     */
     public void start(){
         if( dataSender != null ){
             dataSender.interrupt();
@@ -97,6 +157,10 @@ public class ServerHandler {
         dataSender.start();
     }
 
+    /**
+     * Set all server request action listeners. For example, if a client connects or
+     * changes a channel value, these listeners will capture the event and handle it
+     */
     private void setListeners(){
         ServerApp.getServerInstance().addListener(new Listener() {
             public void received(Connection connection, Object object) {
@@ -125,6 +189,9 @@ public class ServerHandler {
         });
     }
 
+    /**
+     * @return A random number between min and max, inclusive
+     */
     private int getRandomNum(){
         return min + (int)( Math.random() * ( ( max - min ) + 1 ) );
     }
@@ -139,6 +206,12 @@ public class ServerHandler {
         return client;
     }
 
+    /**
+     * Determines whether or not a client is still connected to the server
+     *
+     * @param connection A potential connected client
+     * @return true if the client is connected, false if not.
+     */
     private boolean isConnected( ConnectedClient connection ){
         boolean connected = false;
         final Connection[] connections =
@@ -151,9 +224,14 @@ public class ServerHandler {
         return connected;
     }
 
+    /**
+     * Contains logic to send data to all of the connected clients
+     */
     class DataSender extends Thread {
+        /**
+         * Send all connected clients their channels data
+         */
         @Override
-        // Send everyone their channels data
         public void run(){
             System.out.println( "Sending started." );
             while( !Thread.interrupted() && serverSendStatus ) {
@@ -178,6 +256,12 @@ public class ServerHandler {
             System.out.println( "Sending stopped." );
         }
 
+        /**
+         * Get the channels for a specific client before sending them
+         *
+         * @param channels number of channels a client has selected
+         * @return Channels with random number data to send to a client
+         */
         private Channels getChannelsToSend( int channels ){
             Channels channelList = new Channels();
 

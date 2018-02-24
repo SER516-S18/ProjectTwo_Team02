@@ -36,26 +36,17 @@ public class ServerInterface {
 	private Color statusColor = STATUS_OK;
 
     /**
-	 * Create the application.
+	 * Create the server UI
 	 */
 	public ServerInterface() {
 		initialize();
 	}
 
+    /**
+     * @return The server JFRame containing the server UI
+     */
     public JFrame getserverFrame() {
         return serverFrame;
-    }
-
-    public JTextField getFreqTextField() {
-        return freqTextField;
-    }
-
-    public JTextField getHighTextField() {
-        return highTextField;
-    }
-
-    public JTextField getLowTextField() {
-        return lowTextField;
     }
 
     /**
@@ -209,7 +200,9 @@ public class ServerInterface {
 		serverFrame.getContentPane().add(startStopButton);
 	}
 
-	// Action to be triggered on enter press
+    /**
+     * @return Action to be triggered on a press of the enter key for frequency, lowest value and highest value
+     */
 	private Action textBoxAction(){
 	    return new AbstractAction() {
             @Override

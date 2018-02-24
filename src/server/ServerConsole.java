@@ -17,7 +17,10 @@ public class ServerConsole extends JPanel{
 
     private JTextArea textArea;
 
-    ServerConsole( ){
+    /**
+     * Creates a new console panel
+     */
+    ServerConsole(){
         textArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane( textArea );
         PrintStream ps = new PrintStream( new ServerOutputStream() );
@@ -32,7 +35,17 @@ public class ServerConsole extends JPanel{
         this.add( scrollPane, BorderLayout.CENTER );
     }
 
+    /**
+     * An output stream that redirects the java console to
+     * a JTextArea
+     */
     class ServerOutputStream extends OutputStream {
+        /**
+         * Write the contents of the output stream to the textArea
+         *
+         * @param i The current character to add to the console
+         * @throws IOException An error occurred while writing to the console
+         */
         @Override
         public void write(int i) throws IOException {
             // Append new console character and update the text area
