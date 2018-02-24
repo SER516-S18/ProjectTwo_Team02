@@ -43,3 +43,7 @@ Anusha Chittoor Prem [anushaprem29](https://github.com/anushaprem29) | achittoo@
 Sanay Devi[sanaydevi](https://github.com/sanaydevi) | svdevi@asu.edu
 
 Madhavi Latha Bodeddula[mbodeddu](https://github.com/madhavilathab9) | mbodeddu@asu.edu
+
+Melissa Day [melissaDay1] (https://github.com/melissaDay1) | melissa.day@asu.edu
+
+Shalini Chittineni [CS-27] (https://github.com/CS-27) | schittin@asu.edu
