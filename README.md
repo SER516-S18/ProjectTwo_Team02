@@ -39,3 +39,5 @@ Zeyong Cai [NewCai](https://github.com/NewCai) | zcai26@asu.edu
 Douglas Carroll [dcarrol3](https://github.com/dcarrol3) | dcarrol3@asu.edu
 
 Anusha Chittoor Prem [anushaprem29](https://github.com/anushaprem29) | achittoo@asu.edu
+
+Sanay Devi[sanaydevi](https://github.com/sanaydevi) | svdevi@asu.edu
